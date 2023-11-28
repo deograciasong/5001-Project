@@ -2,7 +2,7 @@ def blackjack(bank = int(input("How much money do you have?")):
     decks = 8
     dict_card_value = {"2" : 2, "3" : 3, "4" : 4, "5" : 5, "6" : 6,
                         "7" : 7, "8" : 8, "9" : 9, "10" : 10, "J" : 10,
-                        "Q" : 10, "K" : 10}
+                        "Q" : 10, "K" : 10, "A" : 11}
 
     dict_remaining_cards = {"2" : 4 * decks, "3" : 4 * decks, "4" : 4 * decks,
                        "5" : 4 * decks, "6" : 4 * decks, "7" : 4 * decks,
@@ -13,5 +13,5 @@ def blackjack(bank = int(input("How much money do you have?")):
     shoe = 52 * decks
     cut_off = shoe * .20
 
-    
+
 
