@@ -3,10 +3,10 @@
     creating the hand class
 """
 
-
 CARD_VALUE = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6,
               "7": 7, "8": 8, "9": 9, "10": 10, "J": 10,
               "Q": 10, "K": 10, "A": 11}
+
 
 class Hand:
     """ class: Hand
@@ -26,7 +26,6 @@ class Hand:
         self.cards = cards
         self.value = value
 
-
     def add_card(self, card):
         self.cards.append(card)
 
@@ -43,4 +42,3 @@ class Hand:
             if card == 'A' and value > 21:
                 value -= 10
         self.value = value
-
