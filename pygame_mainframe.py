@@ -25,19 +25,23 @@ def main():
     screen = pygame.display.set_mode([WIDTH, HEIGHT])
     pygame.display.set_caption('Pygame Blackjack!')
 
-    
+
     while (shoe > cut_off) and run:
         # create player hand (object)
         # create dealer hand (object)
         # display both hands
+
         # create a loop for player action
             # generate user input to determine action
             # display new player hand
+
         # create loop for dealer action
             # hit until can no longer hit or bust
             # display new dealer hand
+
         # determine who won
         # calculate the remaining balance of the player
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
