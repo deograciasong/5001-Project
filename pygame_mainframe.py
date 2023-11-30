@@ -1,6 +1,7 @@
 import copy
 import random
 import pygame
+from hand import Hand
 
 pygame.init()
 
