@@ -24,7 +24,7 @@ def main():
     WIDTH = 600
     HEIGHT = 900
     screen = pygame.display.set_mode([WIDTH, HEIGHT])
-    pygame.display.set_caption('Pygame Blackjack!')\
+    pygame.display.set_caption('Pygame Blackjack!')
 
     # initialize a deck class here
     shoe = Deck()
