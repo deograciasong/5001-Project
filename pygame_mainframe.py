@@ -43,7 +43,11 @@ def main():
         for i in range(2):
             player.add_card(deck.draw_card)
             dealer.add_card(deck.draw_card)
+            
+        player.calc_value()
+        dealer.calc_value()
         """
+
         # display both hands
 
         # create a loop for player action
@@ -53,6 +57,7 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
+            continue
 
         # create loop for dealer action
         # hit until can no longer hit or bust
