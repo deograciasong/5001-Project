@@ -16,4 +16,20 @@ class Deck:
                  shuffle
                  remaining_count
     """
-    #hi
+    def __init__(self, card = None, drawn_count = 0):
+        """
+            Constructor -- creates a new instance of a hand
+            Parameters: self -- the current object
+                        card -- card that is drawn
+                        drawn_count -- number of cards that have been drawn
+        """
+        self.card = card
+        self.drawn_count = drawn_count
+    def draw_card(self):
+        import random
+        options = []
+
+
+    def shuffle(self):
+        # creating full 52*8 deck again
+    def remaining_count(self):
