@@ -43,6 +43,8 @@ def main():
         # determine who won
         # calculate the remaining balance of the player
 
+        # change
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
