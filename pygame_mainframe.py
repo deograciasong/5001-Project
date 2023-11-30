@@ -24,12 +24,23 @@ def main():
     WIDTH = 600
     HEIGHT = 900
     screen = pygame.display.set_mode([WIDTH, HEIGHT])
-    pygame.display.set_caption('Pygame Blackjack!')
+    pygame.display.set_caption('Pygame Blackjack!')\
+
+    # initialize a deck class here
+    shoe = Deck()
 
 
     while (shoe > cut_off) and run:
         # create player hand (object)
         # create dealer hand (object)
+        """
+        player = Hand()
+        dealer = Hand()
+
+        for i in range(2):
+            player.add_card(deck.draw_card)
+            dealer.add_card(deck.draw_card)
+        """
         # display both hands
 
         # create a loop for player action
