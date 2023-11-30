@@ -11,19 +11,19 @@ dict_remaining_cards = {"2": 4 * decks, "3": 4 * decks, "4": 4 * decks,
 
 class Deck:
     """ class: Deck
-        Attributes:
+        Attributes: remaining_cards, drawn_count
         Methods: draw_card (removes card from deck)
                  shuffle
                  remaining_count
     """
-    def __init__(self, card = None, drawn_count = 0):
+    def __init__(self, remaining_cards=dict_remaining_cards, drawn_count=0):
         """
             Constructor -- creates a new instance of a hand
             Parameters: self -- the current object
                         card -- card that is drawn
                         drawn_count -- number of cards that have been drawn
         """
-        self.card = card
+        self.remaining_cards = remaining_cards
         self.drawn_count = drawn_count
     def draw_card(self):
         import random
