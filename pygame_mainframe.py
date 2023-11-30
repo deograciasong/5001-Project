@@ -29,8 +29,20 @@ def main():
     # initialize a deck class here
     shoe = Deck()
 
+    # initialize stats
+    wins = 0
+    losses = 0
+    pushes = 0
+    rounds = 0
+
+    # initialize bankroll
+    bank = int(input("How much money are you willing to lose?"
+                     "(gamble responsibly!)"))
+
 
     while (shoe > cut_off) and run:
+        # generate user input for bet
+        bet = int(input("what is your bet size for the round?"))
         # create player hand (object)
         # create dealer hand (object)
         """
@@ -47,14 +59,26 @@ def main():
             # generate user input to determine action
             # display new player hand
 
+
         # create loop for dealer action
             # hit until can no longer hit or bust
             # display new dealer hand
 
         # determine who won
         # calculate the remaining balance of the player
+        if player.get_value > dealer.get_value:
+            wins += 1
+            bank += bet
+            rounds += 1
+        elif player.get_value < dealer.get_value:
+            losses += 1
+            bank -= bet
+            rounds += 1
+        else:
+            pushes += 1
+            rounds += 1
 
-        # change
+        # update statistics and visualize
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
