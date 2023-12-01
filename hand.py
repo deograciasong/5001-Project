@@ -36,9 +36,20 @@ class Hand:
         :return: None
         """
         value = 0
-        for card in self.cards:
+
+        non_aces = [card for card in self.cards if card != 'A']
+        aces = [card for card in self.cards if card == 'A']
+
+        for card in non_aces:
             value += CARD_VALUE[card]
-            # checking if the card is an Ace and updating the value
-            if card == 'A' and value > 21:
-                value -= 10
+
+        for card in aces:
+            if value <= 10:
+                value += 11
+            else:
+                value += 1
+
         self.value = value
+
+    def get_value(self):
+        return self.value

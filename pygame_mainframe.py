@@ -3,7 +3,6 @@ import random
 import pygame
 from constants import *
 from hand import Hand
-from deck import Deck
 
 pygame.init()
 
@@ -64,37 +63,6 @@ def button(msg, x, y, w, h, ic, ac, action=None):
 def main():
     run = True
     decks = 8
-    dict_card_value = {
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7": 7,
-        "8": 8,
-        "9": 9,
-        "10": 10,
-        "J": 10,
-        "Q": 10,
-        "K": 10,
-        "A": 11,
-    }
-
-    dict_remaining_cards = {
-        "2": 4 * decks,
-        "3": 4 * decks,
-        "4": 4 * decks,
-        "5": 4 * decks,
-        "6": 4 * decks,
-        "7": 4 * decks,
-        "8": 4 * decks,
-        "9": 4 * decks,
-        "10": 4 * decks,
-        "J": 4 * decks,
-        "Q": 4 * decks,
-        "K": 4 * decks,
-        "A": 4 * decks,
-    }
 
     shoe = 52 * decks
     cut_off = shoe * 0.20
@@ -109,7 +77,8 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?" "(gamble responsibly!)"))
+    bank = int(input("How much money are you willing to lose?"
+                     "(gamble responsibly!)"))
 
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
@@ -117,6 +86,8 @@ def main():
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
 
     while (shoe > cut_off) and run:
+        # generate user input for bet
+        bet = int(input("what is your bet size for the round?"))
         # create player hand (object)
         # create dealer hand (object)
         """
@@ -126,7 +97,7 @@ def main():
         for i in range(2):
             player.add_card(deck.draw_card)
             dealer.add_card(deck.draw_card)
-
+            
         player.calc_value()
         dealer.calc_value()
         """
@@ -136,13 +107,36 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
+        if player.get_value > 21:
+            losses += 1
+            bank -= bet
+            rounds += 1
+            continue
 
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
+        if dealer.get_value > 21:
+            wins += 1
+            bank += bet
+            rounds += 1
+            continue
 
         # determine who won
-        # calculate the remaining balance of the player
+        # calculate the remaining balance of the player\
+        if player.get_value < dealer.get_value:
+            losses += 1
+            bank -= bet
+            rounds += 1
+        elif player.get_value > dealer.get_value:
+            wins += 1
+            bank += bet
+            rounds += 1
+        else:
+            pushes += 1
+            rounds += 1
+
+        # update statistics and visualize
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
