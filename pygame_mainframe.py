@@ -107,6 +107,7 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
+
         if player.get_value > 21:
             losses += 1
             bank -= bet
