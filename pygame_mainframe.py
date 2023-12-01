@@ -3,6 +3,7 @@ import random
 import pygame
 from constants import *
 from hand import Hand
+from deck import Deck
 
 pygame.init()
 
@@ -98,6 +99,18 @@ def main():
     shoe = 52 * decks
     cut_off = shoe * 0.20
 
+    # initialize a deck class here
+    shoe = Deck()
+
+    # initialize stats
+    wins = 0
+    losses = 0
+    pushes = 0
+    rounds = 0
+
+    # initialize bankroll
+    bank = int(input("How much money are you willing to lose?" "(gamble responsibly!)"))
+
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
@@ -106,6 +119,18 @@ def main():
     while (shoe > cut_off) and run:
         # create player hand (object)
         # create dealer hand (object)
+        """
+        player = Hand()
+        dealer = Hand()
+
+        for i in range(2):
+            player.add_card(deck.draw_card)
+            dealer.add_card(deck.draw_card)
+
+        player.calc_value()
+        dealer.calc_value()
+        """
+
         # display both hands
 
         # create a loop for player action
