@@ -3,6 +3,7 @@ import random
 import pygame
 from constants import *
 from hand import Hand
+from deck import Deck
 
 pygame.init()
 
@@ -59,6 +60,21 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     TextRect.center = ((x + (w / 2)), (y + (h / 2)))
     gameDisplay.blit(TextSurf, TextRect)
 
+    def player_action(player):
+        """
+        performs all actions requested by the player
+        determines which button is clicked by user then acts accordingly
+        parameters: player (object: Class Hand)
+        returns: player (object: class Hand)
+        """
+        action = True
+        while action:
+            button("Hit", 30, 200, 150, 50, light_slat, dark_slat,
+                   action = player.add_card())
+            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
+            button("Double", 30, 400, 150, 50, light_slat, dark_slat,
+                   action = player.add_card())
+
 
 def main():
     run = True
@@ -85,29 +101,27 @@ def main():
     gameDisplay.blit(scaled_image, [0, 0])
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
 
-    while (shoe > cut_off) and run:
+    while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
         bet = int(input("what is your bet size for the round?"))
         # create player hand (object)
         # create dealer hand (object)
-        """
         player = Hand()
         dealer = Hand()
 
         for i in range(2):
-            player.add_card(deck.draw_card)
-            dealer.add_card(deck.draw_card)
+            player.add_card(shoe.draw_card())
+            dealer.add_card(shoe.draw_card())
             
         player.calc_value()
         dealer.calc_value()
-        """
 
         # display both hands
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-
+        player_action(player)
         if player.get_value > 21:
             losses += 1
             bank -= bet
