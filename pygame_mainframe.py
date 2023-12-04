@@ -3,6 +3,7 @@ import random
 import pygame
 from constants import *
 from hand import Hand
+from deck import Deck
 
 pygame.init()
 
