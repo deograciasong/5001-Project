@@ -105,6 +105,7 @@ def main():
     while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
         bet = int(input("what is your bet size for the round?"))
+
         # create player hand (object)
         # create dealer hand (object)
         player = Hand()
