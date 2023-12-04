@@ -39,7 +39,6 @@ class Deck:
             card_count = self.remaining_cards[card]
         self.remaining_cards[card] -= 1
         self.drawn_count += 1
-        print(card)
         return card
 
     def shuffle(self):

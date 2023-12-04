@@ -60,20 +60,21 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     TextRect.center = ((x + (w / 2)), (y + (h / 2)))
     gameDisplay.blit(TextSurf, TextRect)
 
-    def player_action(player):
-        """
-        performs all actions requested by the player
-        determines which button is clicked by user then acts accordingly
-        parameters: player (object: Class Hand)
-        returns: player (object: class Hand)
-        """
-        action = True
-        while action:
-            button("Hit", 30, 200, 150, 50, light_slat, dark_slat,
-                   action = player.add_card())
-            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-            button("Double", 30, 400, 150, 50, light_slat, dark_slat,
-                   action = player.add_card())
+def player_action(player, shoe):
+    """
+    performs all actions requested by the player
+    determines which button is clicked by user then acts accordingly
+    parameters: player (object: Class Hand)
+    returns: player (object: class Hand)
+    """
+    run = True
+    while run:
+        button("Hit", 30, 200, 150, 50, light_slat, dark_slat,
+               action = player.add_card(shoe.draw_card))
+        button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
+        button("Double", 30, 400, 150, 50, light_slat, dark_slat,
+               action = player.add_card(shoe.draw_card))
+        pygame.display.flip()
 
 
 def main():
@@ -121,8 +122,8 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-        player_action(player)
-        if player.get_value > 21:
+        #player_action(player, shoe)
+        if player.get_value() > 21:
             losses += 1
             bank -= bet
             rounds += 1
@@ -131,7 +132,7 @@ def main():
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
-        if dealer.get_value > 21:
+        if dealer.get_value() > 21:
             wins += 1
             bank += bet
             rounds += 1
@@ -139,11 +140,11 @@ def main():
 
         # determine who won
         # calculate the remaining balance of the player\
-        if player.get_value < dealer.get_value:
+        if player.get_value() < dealer.get_value():
             losses += 1
             bank -= bet
             rounds += 1
-        elif player.get_value > dealer.get_value:
+        elif player.get_value() > dealer.get_value():
             wins += 1
             bank += bet
             rounds += 1
