@@ -44,7 +44,9 @@ class Deck:
         self.remaining_cards = dict_remaining_cards
 
     def get_drawn_count(self):
+        # return the number of cards drawn
         return self.drawn_count
 
     def get_remaining_cards(self):
+        # return the number of cards remaining in a deck
         return (52 * decks) - self.drawn_count

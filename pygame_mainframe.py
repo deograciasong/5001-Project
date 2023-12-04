@@ -76,7 +76,6 @@ def player_action(player, shoe):
                action = player.add_card(shoe.draw_card))
         pygame.display.flip()
 
-
 def main():
     run = True
     decks = 8
