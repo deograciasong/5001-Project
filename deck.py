@@ -22,17 +22,22 @@ class Deck:
             Constructor -- creates a new instance of a hand
             Parameters: self -- the current object
                         card -- card that is drawn
-                        drawn_count -- number of cards that have been drawn
+                        get_drawn_count -- number of cards that have been drawn
+                        get_remaining_count -- number of cards left in the deck
         """
         self.remaining_cards = remaining_cards
         self.drawn_count = drawn_count
 
     def draw_card(self):
         import random
-        card, card_count = random.choice(self.dict_remaining_cards)
+        # card, card_count = random.choice(self.remaining_cards)
+        card = random.choice(list(self.remaining_cards.keys()))
+        card_count = self.remaining_cards[card]
         while card_count == 0:
-            card, card_count = random.choice(self.dict_remaining_cards)
-        self.dict_remaining_cards[card] -= 1
+            # card, card_count = random.choice(self.remaining_cards)
+            card = random.choice(list(self.remaining_cards.keys()))
+            card_count = self.remaining_cards[card]
+        self.remaining_cards[card] -= 1
         self.drawn_count += 1
         return card
 
@@ -40,5 +45,8 @@ class Deck:
         # creating full 52*8 deck again
         self.remaining_cards = dict_remaining_cards
 
-    def remaining_count(self):
+    def get_drawn_count(self):
         return self.drawn_count
+
+    def get_remaining_cards(self):
+        return (52 * decks) - self.drawn_count
