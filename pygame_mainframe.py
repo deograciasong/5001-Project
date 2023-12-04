@@ -76,6 +76,19 @@ def player_action(player, shoe):
                action = player.add_card(shoe.draw_card))
         pygame.display.flip()
 
+def dealer_action(dealer, shoe):
+    """
+
+    """
+    run = True
+    while run:
+        button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
+        button("Stand", 30, 300, 150, 50, light_slat, dark_slat,
+               action = dealer.add_card(shoe.draw_card))
+        button("Double", 30, 400, 150, 50, light_slat, dark_slat)
+        pygame.display.flip()
+
+
 def main():
     run = True
     decks = 8
