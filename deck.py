@@ -30,11 +30,9 @@ class Deck:
 
     def draw_card(self):
         import random
-        # card, card_count = random.choice(self.remaining_cards)
         card = random.choice(list(self.remaining_cards.keys()))
         card_count = self.remaining_cards[card]
         while card_count == 0:
-            # card, card_count = random.choice(self.remaining_cards)
             card = random.choice(list(self.remaining_cards.keys()))
             card_count = self.remaining_cards[card]
         self.remaining_cards[card] -= 1
