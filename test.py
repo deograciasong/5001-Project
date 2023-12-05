@@ -28,7 +28,7 @@ def buttons(msg, x, y, w, h, ic, ac):
         pygame.draw.rect(gameDisplay, ac, button)
     else:
         pygame.draw.rect(gameDisplay, ic, button)
-    gameDisplay.blit(surf, (button.x + 5, button.y + 5))
+    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
     pygame.display.update()
 
 
@@ -43,12 +43,12 @@ def player_action(player, shoe):
     """
     run = True
     while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
         hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
         if hit == "Hit":
             player.add_card(shoe.draw_card())
+            player.calc_value()
+            if player.get_value() > 21:
+                run = False
             print('success')
 
         stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
@@ -59,8 +59,12 @@ def player_action(player, shoe):
         double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
         if double == "Double":
             player.add_card(shoe.draw_card())
-            break
+            player.calc_value()
+            run = False
             print("double")
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
 
 
 
@@ -95,8 +99,8 @@ def main():
         bet = 1
         # create player hand (object)
         # create dealer hand (object)
-        player = Hand()
-        dealer = Hand()
+        player = Hand(cards=[], value=0)
+        dealer = Hand(cards=[], value=0)
 
         for i in range(2):
             player.add_card(shoe.draw_card())
@@ -104,13 +108,15 @@ def main():
 
         player.calc_value()
         dealer.calc_value()
+
+        print(player)
         # display both hands
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         player_action(player, shoe)
-        print('end')
+        print(player)
         if player.get_value() > 21:
             losses += 1
             bank -= bet

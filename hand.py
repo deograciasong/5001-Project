@@ -53,3 +53,9 @@ class Hand:
 
     def get_value(self):
         return self.value
+
+    def __str__(self):
+        hand = ""
+        for card in self.cards:
+            hand += (card + " ")
+        return  f"Current player's hand is {hand}with a value of {self.value}"
