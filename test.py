@@ -14,57 +14,9 @@ clock = pygame.time.Clock()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
-###text object render
-def text_objects(text, font):
-    textSurface = font.render(text, True, black)
-    return textSurface, textSurface.get_rect()
-
-
-def end_text_objects(text, font, color):
-    textSurface = font.render(text, True, color)
-    return textSurface, textSurface.get_rect()
-
-
-# game text display
-def game_texts(text, x, y):
-    TextSurf, TextRect = text_objects(text, textfont)
-    TextRect.center = (x, y)
-    gameDisplay.blit(TextSurf, TextRect)
-
-    pygame.display.update()
-
-
-def game_finish(text, x, y, color):
-    TextSurf, TextRect = end_text_objects(text, game_end, color)
-    TextRect.center = (x, y)
-    gameDisplay.blit(TextSurf, TextRect)
-    pygame.display.update()
-
-
-def black_jack(text, x, y, color):
-    TextSurf, TextRect = end_text_objects(text, blackjack, color)
-    TextRect.center = (x, y)
-    gameDisplay.blit(TextSurf, TextRect)
-    pygame.display.update()
-
-
-def button(msg, x, y, w, h, ic, ac, action=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    if x + w > mouse[0] > x and y + h > mouse[1] > y:
-        pygame.draw.rect(gameDisplay, ac, (x, y, w, h))
-        if click[0] == 1 != None:
-            action()
-    else:
-        pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
-
-    TextSurf, TextRect = text_objects(msg, font)
-    TextRect.center = ((x + (w / 2)), (y + (h / 2)))
-    gameDisplay.blit(TextSurf, TextRect)
-
 def buttons(msg, x, y, w, h, ic, ac):
     font = pygame.font.SysFont('Georgia', 25, bold=True)
-    surf = font.render(msg, True, ic)
+    surf = font.render(msg, True, 'white')
     button = pygame.Rect(x, y, w, h)
 
     for events in pygame.event.get():
@@ -91,21 +43,24 @@ def player_action(player, shoe):
     """
     run = True
     while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
         hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
+        if hit == "Hit":
+            print('success')
+
         stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
-
-        pygame.display.update()
-
         if stand == "Stand":
             run = False
             print('stand')
 
-        if hit == "Hit":
-            print('success')
-
+        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
         if double == "Double":
             print("double")
+
+
+
 
 def main():
     run = True
@@ -190,10 +145,9 @@ def main():
             button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
             button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
             button("Double", 30, 400, 150, 50, light_slat, dark_slat)
-        #     # button("EXIT", 30, 600, 150, 50, red, dark_red)
+             # button("EXIT", 30, 600, 150, 50, red, dark_red)
 
             pygame.display.flip()
-            time.sleep(3)
     pygame.quit()
 
 
