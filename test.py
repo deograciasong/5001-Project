@@ -48,6 +48,7 @@ def player_action(player, shoe):
                 run = False
         hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
         if hit == "Hit":
+            player.add_card(shoe.draw_card())
             print('success')
 
         stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
@@ -57,6 +58,8 @@ def player_action(player, shoe):
 
         double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
         if double == "Double":
+            player.add_card(shoe.draw_card())
+            break
             print("double")
 
 
