@@ -34,12 +34,12 @@ def buttons(msg, x, y, w, h, ic, ac):
 
 
 
-def player_action(player, shoe):
+def player_action(player, shoe, bet):
     """
     performs all actions requested by the player
     determines which button is clicked by user then acts accordingly
     parameters: player (object: Class Hand)
-    returns: player (object: class Hand)
+    returns: bet (int, value of the bet)
     """
     run = True
     while run:
@@ -60,11 +60,13 @@ def player_action(player, shoe):
         if double == "Double":
             player.add_card(shoe.draw_card())
             player.calc_value()
+            bet *= 2
             run = False
             print("double")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+        return bet
 
 
 
@@ -115,7 +117,7 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-        player_action(player, shoe)
+        bet = player_action(player, shoe, bet)
         print(player)
         if player.get_value() > 21:
             losses += 1
