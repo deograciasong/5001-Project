@@ -99,8 +99,8 @@ def main():
         bet = 1
         # create player hand (object)
         # create dealer hand (object)
-        player = Hand(cards=[], value=0, cards_value=[])
-        dealer = Hand(cards=[], value=0, cards_value=[])
+        player = Hand(cards=[], value=0)
+        dealer = Hand(cards=[], value=0)
 
         for i in range(2):
             player.add_card(shoe.draw_card())

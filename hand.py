@@ -15,7 +15,7 @@ class Hand:
                  calc_value (calculates the value of the hand)
     """
 
-    def __init__(self, cards=[], value=0, cards_value=[]):
+    def __init__(self, cards=[], value=0):
         """
             Constructor -- creates a new instance of a hand
             Parameters: self -- the current object
@@ -25,11 +25,9 @@ class Hand:
 
         self.cards = cards
         self.value = value
-        self.cards_value = cards_value
 
     def add_card(self, card):
         self.cards.append(card)
-        self.cards_value.append(CARD_VALUE[card])
 
     def calc_value(self):
         """
