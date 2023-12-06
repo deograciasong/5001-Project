@@ -1,8 +1,6 @@
 import copy
 import random
 import pygame
-import time
-from time import sleep
 from constants import *
 from hand import Hand
 from deck import Deck
@@ -22,12 +20,16 @@ def buttons(msg, x, y, w, h, ic, ac):
     for events in pygame.event.get():
         if events.type == pygame.MOUSEBUTTONDOWN:
             if button.collidepoint(events.pos):
+                print('working')
                 return msg
     a, b = pygame.mouse.get_pos()
+
+    # draws the rectangle
     if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
         pygame.draw.rect(gameDisplay, ac, button)
     else:
         pygame.draw.rect(gameDisplay, ic, button)
+
     gameDisplay.blit(surf, (button.x + 50, button.y + 5))
     pygame.display.update()
 
@@ -47,7 +49,7 @@ def player_action(player, shoe, bet):
             player.calc_value()
             if player.get_value() > 21:
                 run = False
-            print("success")
+            print("Hit")
 
         stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
         if stand == "Stand":
@@ -61,19 +63,27 @@ def player_action(player, shoe, bet):
             bet *= 2
             run = False
             print("double")
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+        #
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         run = False
     return bet
+
+
+def dealer_action(dealer, shoe):
+    """
+    performs all actions of a dealer once the player action is over
+    draws cards until the dealer's card values are over 16
+    """
+    while dealer.get_value() < 16:
+        dealer.add_card(shoe.draw_card)
+        dealer.calc_value()
 
 
 def main():
     run = True
     decks = 8
-
-    shoe = 52 * decks
-    cut_off = shoe * 0.20
+    cut_off = 52 * decks * 0.20
 
     # initialize a deck class here
     shoe = Deck()
@@ -85,7 +95,8 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?" "(gamble responsibly!)"))
+    bank = int(input("How much money are you willing to lose?"
+                     "(gamble responsibly!)"))
 
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
@@ -95,10 +106,11 @@ def main():
     while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
         bet = 1
+
         # create player hand (object)
         # create dealer hand (object)
-        player = Hand(cards=[], value=0)
-        dealer = Hand(cards=[], value=0)
+        player = Hand()
+        dealer = Hand()
 
         for i in range(2):
             player.add_card(shoe.draw_card())
@@ -107,14 +119,12 @@ def main():
         player.calc_value()
         dealer.calc_value()
 
-        print(player)
         # display both hands
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         bet = player_action(player, shoe, bet)
-        print(player)
         if player.get_value() > 21:
             losses += 1
             bank -= bet
@@ -155,16 +165,6 @@ def main():
         )
         gameDisplay.blit(statistics_text, (250, 600))
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            buttons("Deal", 30, 100, 150, 50, light_slat, dark_slat)
-            buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-            buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-            buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
-            # button("EXIT", 30, 600, 150, 50, red, dark_red)
-
-            pygame.display.flip()
     pygame.quit()
 
 
