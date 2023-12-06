@@ -163,8 +163,8 @@ def main():
 
         # create player hand (object)
         # create dealer hand (object)
-        player = Hand()
-        dealer = Hand()
+        player = Hand(cards=[], value=0, cards_value=[])
+        dealer = Hand(cards=[], value=0, cards_value=[])
 
         for i in range(2):
             player.add_card(shoe.draw_card())
@@ -219,6 +219,7 @@ def main():
             black,
         )
         gameDisplay.blit(statistics_text, (250, 600))
+
 
 
 if __name__ == "__main__":
