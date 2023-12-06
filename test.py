@@ -65,7 +65,7 @@ def player_action(player, shoe, bet):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        return bet
+    return bet
 
 
 def main():
@@ -143,7 +143,7 @@ def main():
         else:
             pushes += 1
             rounds += 1
-        '''
+
         # update statistics and visualize
         gameDisplay.fill(
             grey, pygame.Rect(200, 600, display_width, display_height)
@@ -154,7 +154,7 @@ def main():
             black,
         )
         gameDisplay.blit(statistics_text, (250, 600))
-        '''
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
