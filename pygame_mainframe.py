@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
-
+'''
 ###text object render
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -59,22 +59,60 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     TextSurf, TextRect = text_objects(msg, font)
     TextRect.center = ((x + (w / 2)), (y + (h / 2)))
     gameDisplay.blit(TextSurf, TextRect)
+'''
 
-def player_action(player, shoe):
+def buttons(msg, x, y, w, h, ic, ac):
+    font = pygame.font.SysFont("Georgia", 25, bold=True)
+    surf = font.render(msg, True, "white")
+    button = pygame.Rect(x, y, w, h)
+
+    for events in pygame.event.get():
+        if events.type == pygame.MOUSEBUTTONDOWN:
+            if button.collidepoint(events.pos):
+                return msg
+    a, b = pygame.mouse.get_pos()
+    if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
+        pygame.draw.rect(gameDisplay, ac, button)
+    else:
+        pygame.draw.rect(gameDisplay, ic, button)
+    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
+    pygame.display.update()
+
+
+def player_action(player, shoe, bet):
     """
     performs all actions requested by the player
     determines which button is clicked by user then acts accordingly
     parameters: player (object: Class Hand)
-    returns: player (object: class Hand)
+    returns: bet (int, value of the bet)
     """
     run = True
     while run:
-        button("Hit", 30, 200, 150, 50, light_slat, dark_slat,
-               action = player.add_card(shoe.draw_card))
-        button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-        button("Double", 30, 400, 150, 50, light_slat, dark_slat,
-               action = player.add_card(shoe.draw_card))
-        pygame.display.flip()
+        hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
+        if hit == "Hit":
+            player.add_card(shoe.draw_card())
+            player.calc_value()
+            if player.get_value() > 21:
+                run = False
+            print("success")
+
+        stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
+        if stand == "Stand":
+            run = False
+            print("stand")
+
+        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
+        if double == "Double":
+            player.add_card(shoe.draw_card())
+            player.calc_value()
+            bet *= 2
+            run = False
+            print("double")
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+    return bet
 
 def dealer_action(dealer, shoe):
     """
@@ -108,7 +146,7 @@ def main():
 
     while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
-        bet = int(input("what is your bet size for the round?"))
+        bet = 1
 
         # create player hand (object)
         # create dealer hand (object)
@@ -127,7 +165,7 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-        #player_action(player, shoe)
+        bet = player_action(player, shoe, bet)
         if player.get_value() > 21:
             losses += 1
             bank -= bet
@@ -158,6 +196,15 @@ def main():
             rounds += 1
 
         # update statistics and visualize
+        gameDisplay.fill(
+            grey, pygame.Rect(200, 600, display_width, display_height)
+        )  # Clear a specific area of the display
+        statistics_text = textfont.render(
+            f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
+            True,
+            black,
+        )
+        gameDisplay.blit(statistics_text, (250, 600))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
