@@ -92,9 +92,7 @@ def dealer_action(dealer, shoe):
 def main():
     run = True
     decks = 8
-
-    shoe = 52 * decks
-    cut_off = shoe * 0.20
+    cut_off = 52 * decks * 0.20
 
     # initialize a deck class here
     shoe = Deck()
