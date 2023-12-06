@@ -78,17 +78,11 @@ def player_action(player, shoe):
 
 def dealer_action(dealer, shoe):
     """
-
+    performs all actions of a dealer once the player action is over
+    draws cards until the dealer's card values are over 16
     """
-    run = True
-    while run:
-        button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-        button("Stand", 30, 300, 150, 50, light_slat, dark_slat,
-               action = dealer.add_card(shoe.draw_card))
-        button("Double", 30, 400, 150, 50, light_slat, dark_slat)
-        pygame.display.flip()
-
-
+    while dealer.calc_value() < 16:
+        dealer.add_card(shoe.draw_card)
 def main():
     run = True
     decks = 8
