@@ -61,6 +61,7 @@ def player_action(player, shoe, bet):
             bet *= 2
             run = False
             print("double")
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -142,6 +143,7 @@ def main():
         else:
             pushes += 1
             rounds += 1
+        '''
         # update statistics and visualize
         gameDisplay.fill(
             grey, pygame.Rect(200, 600, display_width, display_height)
@@ -152,18 +154,18 @@ def main():
             black,
         )
         gameDisplay.blit(statistics_text, (250, 600))
-
-        """for event in pygame.event.get():
+        '''
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
-            button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-            button("Double", 30, 400, 150, 50, light_slat, dark_slat)
+            buttons("Deal", 30, 100, 150, 50, light_slat, dark_slat)
+            buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
+            buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
+            buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
             # button("EXIT", 30, 600, 150, 50, red, dark_red)
 
             pygame.display.flip()
-    pygame.quit()"""
+    pygame.quit()
 
 
 if __name__ == "__main__":
