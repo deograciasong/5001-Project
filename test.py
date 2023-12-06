@@ -15,8 +15,8 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
 def buttons(msg, x, y, w, h, ic, ac):
-    font = pygame.font.SysFont('Georgia', 25, bold=True)
-    surf = font.render(msg, True, 'white')
+    font = pygame.font.SysFont("Georgia", 25, bold=True)
+    surf = font.render(msg, True, "white")
     button = pygame.Rect(x, y, w, h)
 
     for events in pygame.event.get():
@@ -24,14 +24,12 @@ def buttons(msg, x, y, w, h, ic, ac):
             if button.collidepoint(events.pos):
                 return msg
     a, b = pygame.mouse.get_pos()
-    if button.x  <= a <= button.x + w and button.y <= b <= button.y + h:
+    if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
         pygame.draw.rect(gameDisplay, ac, button)
     else:
         pygame.draw.rect(gameDisplay, ic, button)
     gameDisplay.blit(surf, (button.x + 50, button.y + 5))
     pygame.display.update()
-
-
 
 
 def player_action(player, shoe, bet):
@@ -49,12 +47,12 @@ def player_action(player, shoe, bet):
             player.calc_value()
             if player.get_value() > 21:
                 run = False
-            print('success')
+            print("success")
 
         stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
         if stand == "Stand":
             run = False
-            print('stand')
+            print("stand")
 
         double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
         if double == "Double":
@@ -67,8 +65,6 @@ def player_action(player, shoe, bet):
             if event.type == pygame.QUIT:
                 run = False
         return bet
-
-
 
 
 def main():
@@ -88,8 +84,7 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?"
-                     "(gamble responsibly!)"))
+    bank = int(input("How much money are you willing to lose?" "(gamble responsibly!)"))
 
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
@@ -148,18 +143,27 @@ def main():
             pushes += 1
             rounds += 1
         # update statistics and visualize
+        gameDisplay.fill(
+            grey, pygame.Rect(200, 600, display_width, display_height)
+        )  # Clear a specific area of the display
+        statistics_text = textfont.render(
+            f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
+            True,
+            black,
+        )
+        gameDisplay.blit(statistics_text, (250, 600))
 
-        for event in pygame.event.get():
+        """for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
             button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
             button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
             button("Double", 30, 400, 150, 50, light_slat, dark_slat)
-             # button("EXIT", 30, 600, 150, 50, red, dark_red)
+            # button("EXIT", 30, 600, 150, 50, red, dark_red)
 
             pygame.display.flip()
-    pygame.quit()
+    pygame.quit()"""
 
 
 if __name__ == "__main__":
