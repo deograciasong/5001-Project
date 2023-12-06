@@ -4,6 +4,7 @@ import pygame
 from constants import *
 from hand import Hand
 from deck import Deck
+import sys
 
 pygame.init()
 
@@ -61,6 +62,7 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     gameDisplay.blit(TextSurf, TextRect)
 '''
 
+
 def buttons(msg, x, y, w, h, ic, ac):
     font = pygame.font.SysFont("Georgia", 25, bold=True)
     surf = font.render(msg, True, "white")
@@ -114,14 +116,24 @@ def player_action(player, shoe, bet):
                 run = False
     return bet
 
+
 def dealer_action(dealer, shoe):
     """
     performs all actions of a dealer once the player action is over
     draws cards until the dealer's card values are over 16
     """
-    while dealer.calc_value() < 16:
+    while dealer.get.value() < 16:
         dealer.add_card(shoe.draw_card)
+        dealer.calc.value()
+
 def main():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            print("hi")
+            pygame.quit()
+            sys.exit()
+    pygame.display.update()
+
     run = True
     decks = 8
     cut_off = 52 * decks * 0.20
@@ -144,6 +156,7 @@ def main():
     gameDisplay.blit(scaled_image, [0, 0])
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
 
+
     while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
         bet = 1
@@ -156,7 +169,7 @@ def main():
         for i in range(2):
             player.add_card(shoe.draw_card())
             dealer.add_card(shoe.draw_card())
-            
+
         player.calc_value()
         dealer.calc_value()
 
@@ -175,6 +188,7 @@ def main():
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
+        dealer_action(dealer, shoe)
         if dealer.get_value() > 21:
             wins += 1
             bank += bet
@@ -205,18 +219,6 @@ def main():
             black,
         )
         gameDisplay.blit(statistics_text, (250, 600))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
-            button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-            button("Double", 30, 400, 150, 50, light_slat, dark_slat)
-            # button("EXIT", 30, 600, 150, 50, red, dark_red)
-
-        pygame.display.flip()
-    pygame.quit()
 
 
 if __name__ == "__main__":
