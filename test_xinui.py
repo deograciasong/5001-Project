@@ -28,7 +28,9 @@ def buttons(msg, x, y, w, h, ic, ac):
         pygame.draw.rect(gameDisplay, ac, button)
     else:
         pygame.draw.rect(gameDisplay, ic, button)
-    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
+    text_x = button.x + (w - surf.get_width()) // 2  # Calculate the x-coordinate for center alignment
+    text_y = button.y + (h - surf.get_height()) // 2  # Calculate the y-coordinate for center alignment
+    gameDisplay.blit(surf, (text_x, text_y))
     pygame.display.update()
 
 
