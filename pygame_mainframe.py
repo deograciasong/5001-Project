@@ -61,6 +61,7 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     gameDisplay.blit(TextSurf, TextRect)
 '''
 
+
 def buttons(msg, x, y, w, h, ic, ac):
     font = pygame.font.SysFont("Georgia", 25, bold=True)
     surf = font.render(msg, True, "white")
@@ -114,6 +115,7 @@ def player_action(player, shoe, bet):
                 run = False
     return bet
 
+
 def dealer_action(dealer, shoe):
     """
     performs all actions of a dealer once the player action is over
@@ -121,6 +123,8 @@ def dealer_action(dealer, shoe):
     """
     while dealer.calc_value() < 16:
         dealer.add_card(shoe.draw_card)
+
+
 def main():
     run = True
     decks = 8
@@ -156,7 +160,7 @@ def main():
         for i in range(2):
             player.add_card(shoe.draw_card())
             dealer.add_card(shoe.draw_card())
-            
+
         player.calc_value()
         dealer.calc_value()
 
@@ -206,16 +210,6 @@ def main():
         )
         gameDisplay.blit(statistics_text, (250, 600))
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
-            button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-            button("Double", 30, 400, 150, 50, light_slat, dark_slat)
-            # button("EXIT", 30, 600, 150, 50, red, dark_red)
-
-        pygame.display.flip()
     pygame.quit()
 
 
