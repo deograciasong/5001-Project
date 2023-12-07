@@ -4,34 +4,12 @@ import pygame
 from constants import *
 from hand import Hand
 from deck import Deck
-
-pygame.init()
+from button import Button
 
 clock = pygame.time.Clock()
-
+pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
-
-def buttons(msg, x, y, w, h, ic, ac):
-    font = pygame.font.SysFont("Georgia", 25, bold=True)
-    surf = font.render(msg, True, "white")
-    button = pygame.Rect(x, y, w, h)
-
-    for events in pygame.event.get():
-        if events.type == pygame.MOUSEBUTTONDOWN:
-            if button.collidepoint(events.pos):
-                print('working')
-                return msg
-    a, b = pygame.mouse.get_pos()
-
-    # draws the rectangle
-    if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
-        pygame.draw.rect(gameDisplay, ac, button)
-    else:
-        pygame.draw.rect(gameDisplay, ic, button)
-
-    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
-    pygame.display.update()
 
 
 def player_action(player, shoe, bet):
@@ -41,32 +19,42 @@ def player_action(player, shoe, bet):
     parameters: player (object: Class Hand)
     returns: bet (int, value of the bet)
     """
+
+    hit_button = Button("Hit", 30, 200, 150, 50, surf_hit)
+    stand_button = Button("Stand", 30, 300, 150, 50,surf_stand)
+    double_button = Button("Double", 30, 400, 150, 50, surf_double)
+
     run = True
     while run:
-        hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-        if hit == "Hit":
+
+        gameDisplay.blit(scaled_image, [0, 0])
+        pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
+
+        if hit_button.draw():
             player.add_card(shoe.draw_card())
             player.calc_value()
             if player.get_value() > 21:
                 run = False
-            print("Hit")
+            print('Hit')
 
-        stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-        if stand == "Stand":
+        if stand_button.draw():
             run = False
-            print("stand")
+            print('Stand')
 
-        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
-        if double == "Double":
+        if double_button.draw():
             player.add_card(shoe.draw_card())
             player.calc_value()
             bet *= 2
             run = False
-            print("double")
-        #
-        # for event in pygame.event.get():
-        #     if event.type == pygame.QUIT:
-        #         run = False
+            print("Double")
+
+        # event handler
+        for event in pygame.event.get():
+            # quit game
+            if event.type == pygame.QUIT:
+                run = False
+
+        pygame.display.update()
     return bet
 
 
@@ -98,7 +86,6 @@ def main():
     bank = int(input("How much money are you willing to lose?"
                      "(gamble responsibly!)"))
 
-    screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
@@ -124,7 +111,9 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
+        print(player)
         bet = player_action(player, shoe, bet)
+        print(player)
         if player.get_value() > 21:
             losses += 1
             bank -= bet
@@ -141,7 +130,7 @@ def main():
             continue
 
         # determine who won
-        # calculate the remaining balance of the player\
+        # calculate the remaining balance of the player
         if player.get_value() < dealer.get_value():
             losses += 1
             bank -= bet
@@ -164,7 +153,12 @@ def main():
             black,
         )
         gameDisplay.blit(statistics_text, (250, 600))
+        pygame.display.update()
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            pygame.display.flip()
     pygame.quit()
 
 

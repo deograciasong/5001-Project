@@ -27,3 +27,8 @@ CARD_SIZE = (72, 96)
 CARD_CENTER = (36, 48)
 CARD_BACK_SIZE = (72, 96)
 CARD_BACK_CENTER = (36, 48)
+
+font = pygame.font.SysFont("Georgia", 25, bold=True)
+surf_hit = font.render("Hit", True, "white")
+surf_stand = font.render("Stand", True, "white")
+surf_double = font.render("Double", True, "white")
