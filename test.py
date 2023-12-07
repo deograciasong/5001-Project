@@ -29,23 +29,25 @@ def player_action(player, shoe, bet):
         gameDisplay.blit(scaled_image, [0, 0])
         pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
         if hit_button.draw():
+            print('Hit')
             player.add_card(shoe.draw_card())
             player.calc_value()
             print(player)
             if player.get_value() > 21:
+
                 run = False
-            print('Hit')
 
         if stand_button.draw():
             run = False
             print('Stand')
 
         if double_button.draw():
+            print("Double")
             player.add_card(shoe.draw_card())
             player.calc_value()
+            print(player)
             bet *= 2
             run = False
-            print("Double")
 
         # event handler
         for event in pygame.event.get():
@@ -125,7 +127,6 @@ def main():
         # display new player hand
         print(player)
         bet = player_action(player, shoe, bet)
-        print(player)
         if player.get_value() > 21:
             losses += 1
             bank -= bet
