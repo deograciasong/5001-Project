@@ -23,12 +23,20 @@ def player_action(player, shoe, bet):
     hit_button = Button("Hit", 30, 200, 150, 50, surf_hit)
     stand_button = Button("Stand", 30, 300, 150, 50, surf_stand)
     double_button = Button("Double", 30, 400, 150, 50, surf_double)
+    hit_button.clicked = False
 
     run = True
     while run:
         gameDisplay.blit(scaled_image, [0, 0])
         pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
-        if hit_button.draw():
+
+        # event handler
+        for event in pygame.event.get():
+            # quit game
+            if event.type == pygame.QUIT:
+                run = False
+
+        if hit_button.check_click():
             print('Hit')
             player.add_card(shoe.draw_card())
             player.calc_value()
@@ -37,11 +45,11 @@ def player_action(player, shoe, bet):
 
                 run = False
 
-        if stand_button.draw():
+        if stand_button.check_click():
             run = False
             print('Stand')
 
-        if double_button.draw():
+        if double_button.check_click():
             print("Double")
             player.add_card(shoe.draw_card())
             player.calc_value()
@@ -49,11 +57,9 @@ def player_action(player, shoe, bet):
             bet *= 2
             run = False
 
-        # event handler
-        for event in pygame.event.get():
-            # quit game
-            if event.type == pygame.QUIT:
-                run = False
+        hit_button.draw()
+        stand_button.draw()
+        double_button.draw()
 
         pygame.display.update()
     return bet
