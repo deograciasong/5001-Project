@@ -114,31 +114,29 @@ def main():
         # ...
 
         # Display player's hand
-        player_cards = player.get_cards()
+        player_cards = player.cards
         for i, card in enumerate(player_cards):
             card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(30 + i * 50, 600, 40, 60)
-            pygame.draw.rect(gameDisplay, white, card_rect)
+            card_rect = pygame.Rect(300 + i * 50, 500, 40, 60)
+            pygame.draw.rect(gameDisplay, grey, card_rect)
             gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
 
         # Display dealer's hand
-        dealer_cards = dealer.get_cards()
+        dealer_cards = dealer.cards
         for i, card in enumerate(dealer_cards):
             card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(30 + i * 50, 660, 40, 60)
-            pygame.draw.rect(gameDisplay, white, card_rect)
+            card_rect = pygame.Rect(300 + i * 50, 300, 40, 60)
+            pygame.draw.rect(gameDisplay, grey, card_rect)
             gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
 
         pygame.display.update()
-        print("Player's Hand:", player)
-        print("Dealer's Hand:", dealer)
 
         # Display cards using Pygame GUI
-        player_hand_text = textfont.render(f"Player's Hand: {player}", True, black)
-        dealer_hand_text = textfont.render(f"Dealer's Hand: {dealer}", True, black)
+        player_hand_text = textfont.render("Player's Hand: ", True, black)
+        dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
 
-        gameDisplay.blit(player_hand_text, (30, 500))
-        gameDisplay.blit(dealer_hand_text, (30, 550))
+        gameDisplay.blit(player_hand_text, (10, 500))
+        gameDisplay.blit(dealer_hand_text, (10, 300))
 
         pygame.display.update()
 
