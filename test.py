@@ -1,37 +1,16 @@
 import copy
 import random
+import time
+
 import pygame
 from constants import *
 from hand import Hand
 from deck import Deck
-
-pygame.init()
+from button import Button
 
 clock = pygame.time.Clock()
-
+pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
-
-
-def buttons(msg, x, y, w, h, ic, ac):
-    font = pygame.font.SysFont("Georgia", 25, bold=True)
-    surf = font.render(msg, True, "white")
-    button = pygame.Rect(x, y, w, h)
-
-    for events in pygame.event.get():
-        if events.type == pygame.MOUSEBUTTONDOWN:
-            if button.collidepoint(events.pos):
-                print('working')
-                return msg
-    a, b = pygame.mouse.get_pos()
-
-    # draws the rectangle
-    if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
-        pygame.draw.rect(gameDisplay, ac, button)
-    else:
-        pygame.draw.rect(gameDisplay, ic, button)
-
-    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
-    pygame.display.update()
 
 
 def player_action(player, shoe, bet):
@@ -41,32 +20,48 @@ def player_action(player, shoe, bet):
     parameters: player (object: Class Hand)
     returns: bet (int, value of the bet)
     """
+    hit_button = Button("Hit", 30, 200, 150, 50, surf_hit)
+    stand_button = Button("Stand", 30, 300, 150, 50, surf_stand)
+    double_button = Button("Double", 30, 400, 150, 50, surf_double)
+    hit_button.clicked = False
+
     run = True
     while run:
-        hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-        if hit == "Hit":
-            player.add_card(shoe.draw_card())
-            player.calc_value()
-            if player.get_value() > 21:
+        gameDisplay.blit(scaled_image, [0, 0])
+        pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
+
+        # event handler
+        for event in pygame.event.get():
+            # quit game
+            if event.type == pygame.QUIT:
                 run = False
-            print("Hit")
 
-        stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-        if stand == "Stand":
-            run = False
-            print("stand")
-
-        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
-        if double == "Double":
+        if hit_button.check_click():
+            print('Hit')
             player.add_card(shoe.draw_card())
             player.calc_value()
+            print(player)
+            if player.get_value() > 21:
+
+                run = False
+
+        if stand_button.check_click():
+            run = False
+            print('Stand')
+
+        if double_button.check_click():
+            print("Double")
+            player.add_card(shoe.draw_card())
+            player.calc_value()
+            print(player)
             bet *= 2
             run = False
-            print("double")
-        #
-        # for event in pygame.event.get():
-        #     if event.type == pygame.QUIT:
-        #         run = False
+
+        hit_button.draw()
+        stand_button.draw()
+        double_button.draw()
+
+        pygame.display.update()
     return bet
 
 
@@ -78,6 +73,19 @@ def dealer_action(dealer, shoe):
     while dealer.get_value() < 16:
         dealer.add_card(shoe.draw_card)
         dealer.calc_value()
+
+
+def update_display(rounds, wins, losses, pushes):
+    # update statistics and visualize
+    gameDisplay.fill(
+        grey, pygame.Rect(200, 600, display_width, display_height)
+    )  # Clear a specific area of the display
+    statistics_text = textfont.render(
+        f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
+        True, black)
+    gameDisplay.blit(statistics_text, (250, 600))
+    pygame.display.update()
+    time.sleep(1)
 
 
 def main():
@@ -98,7 +106,6 @@ def main():
     bank = int(input("How much money are you willing to lose?"
                      "(gamble responsibly!)"))
 
-    screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
@@ -124,11 +131,13 @@ def main():
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
+        print(player)
         bet = player_action(player, shoe, bet)
         if player.get_value() > 21:
             losses += 1
             bank -= bet
             rounds += 1
+            update_display(rounds, wins, losses, pushes)
             continue
 
         # create loop for dealer action
@@ -138,10 +147,11 @@ def main():
             wins += 1
             bank += bet
             rounds += 1
+            update_display(rounds, wins, losses, pushes)
             continue
 
         # determine who won
-        # calculate the remaining balance of the player\
+        # calculate the remaining balance of the player
         if player.get_value() < dealer.get_value():
             losses += 1
             bank -= bet
@@ -154,17 +164,12 @@ def main():
             pushes += 1
             rounds += 1
 
-        # update statistics and visualize
-        gameDisplay.fill(
-            grey, pygame.Rect(200, 600, display_width, display_height)
-        )  # Clear a specific area of the display
-        statistics_text = textfont.render(
-            f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
-            True,
-            black,
-        )
-        gameDisplay.blit(statistics_text, (250, 600))
+        update_display(rounds, wins, losses, pushes)
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            pygame.display.flip()
     pygame.quit()
 
 
