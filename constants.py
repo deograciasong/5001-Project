@@ -33,3 +33,5 @@ font = pygame.font.SysFont("Georgia", 25, bold=True)
 surf_hit = font.render("Hit", True, "white")
 surf_stand = font.render("Stand", True, "white")
 surf_double = font.render("Double", True, "white")
+
+font_bet = pygame.font.SysFont("Georgia", 50, bold=True)

@@ -12,6 +12,7 @@ clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
+
 def choose_bet():
     """
     displays a screen for the user to select which bet size they would like to choose
@@ -55,7 +56,6 @@ def choose_bet():
             bet = 0
         if button_bet.check_click():
             run = False
-
 
         # draws the buttons
         button_5.draw()
@@ -209,6 +209,7 @@ def main():
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
+        dealer_action(dealer, shoe)
         if dealer.get_value() > 21:
             wins += 1
             bank += bet
