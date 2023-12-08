@@ -3,6 +3,7 @@ import random
 import pygame
 from constants import *
 from hand import Hand
+from deck import Deck
 
 pygame.init()
 
@@ -59,9 +60,41 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     TextRect.center = ((x + (w / 2)), (y + (h / 2)))
     gameDisplay.blit(TextSurf, TextRect)
 
+def start_menu():
+    screen_width = display_width
+    screen_height = display_height
+    font = pygame.font.SysFont('Times New Roman', 35)
+    title = font.render("BlackJack", True, (255, 255, 255))
+    deal_text = font.render("Press Space to Deal", True, (255, 255, 255))
+    exit_text = font.render("Press ESC to Exit", True, (255, 255, 255))
+    gameDisplay.blit(title, (screen_width / 2 - title.get_width() / 2, screen_height / 2 - title.get_height() / 2))
+    gameDisplay.blit(deal_text, (screen_width / 2 - deal_text.get_width() / 2, screen_height / 2 + deal_text.get_height() / 2))
+    gameDisplay.blit(exit_text, (screen_width / 2 - exit_text.get_width() / 2, screen_height / 4 - exit_text.get_height() / 2))
+    pygame.display.update()
+
+def end_of_round_menu():
+    screen_width = display_width
+    screen_height = display_height
+    font = pygame.font.SysFont('Times New Roman', 35)
+    if bank > 0:
+        title = font.render("You" + str(win_status) + "Press Space to Deal Again or Press ESC to Exit", True, (255, 255, 255))
+    elif bank <= 0:
+        title = font.render("Game Over Press ESC to Exit", True, (255, 255, 255))
+    gameDisplay.blit(title, (screen_width / 2 - title.get_width() / 2, screen_height / 2 - title.get_height() / 2))
+    pygame.display.update()
+
 
 def main():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    pygame.display.update()
+
     run = True
+
+    start_menu()
+
     decks = 8
 
     shoe = 52 * decks
@@ -77,8 +110,8 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?"
-                     "(gamble responsibly!)"))
+    #bank = int(input("How much money are you willing to lose?"
+                     #"(gamble responsibly!)"))
 
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
@@ -111,6 +144,7 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
+            win_status = "lost"
             continue
 
         # create loop for dealer action
@@ -120,6 +154,7 @@ def main():
             wins += 1
             bank += bet
             rounds += 1
+            #win_status = "won"
             continue
 
         # determine who won
@@ -128,10 +163,12 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
+            #win_status = "won"
         elif player.get_value > dealer.get_value:
             wins += 1
             bank += bet
             rounds += 1
+            #win_status = "lost"
         else:
             pushes += 1
             rounds += 1
@@ -140,7 +177,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                pygame.quit()
+                sys.exit()
             button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
             button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
             button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
