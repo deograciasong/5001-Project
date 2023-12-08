@@ -7,12 +7,11 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 class Button():
 
-    def __init__(self, msg, x, y, width, height, surface):
+    def __init__(self, msg, x, y, width, height):
         self.txt = msg
         self.rect = pygame.Rect(x, y, width, height)
         self.rect.topleft = (x, y)
         self.clicked = False
-        self.surf = surface
 
     def draw(self):
         # draw button on screen
