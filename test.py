@@ -126,6 +126,7 @@ def player_action(player, shoe, bet):
         hit_button.draw()
         stand_button.draw()
         double_button.draw()
+        visualize_cards(player)
 
         pygame.display.update()
     return bet
@@ -137,7 +138,7 @@ def dealer_action(dealer, shoe):
     draws cards until the dealer's card values are over 16
     """
     while dealer.get_value() < 16:
-        dealer.add_card(shoe.draw_card)
+        dealer.add_card(shoe.draw_card())
         dealer.calc_value()
 
 
@@ -151,7 +152,22 @@ def update_display(rounds, wins, losses, pushes):
         True, black)
     gameDisplay.blit(statistics_text, (250, 600))
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(3)
+
+
+def visualize_cards(hand):
+    # Display player's hand
+    player_cards = hand.cards
+    for i, card in enumerate(player_cards):
+        card_text = textfont.render(str(card), True, black)
+        card_rect = pygame.Rect(600 + i * 85, 450 + i * 10, 130, 190)
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
+        pygame.draw.rect(
+            gameDisplay, red, card_rect, 5, 5
+        )  # Draw a rectangle with a border
+
+    pygame.display.update()
 
 
 def main():
@@ -193,12 +209,25 @@ def main():
         dealer.calc_value()
 
         # display both hands
+        visualize_cards(player)
+        visualize_cards(dealer)
+
+        # Display cards using Pygame GUI
+        player_hand_text = textfont.render("Player's Hand: ", True, black)
+        dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
+
+        gameDisplay.blit(player_hand_text, (300, 450))
+        gameDisplay.blit(dealer_hand_text, (300, 150))
+
+        pygame.display.update()
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         print(player)
         bet = player_action(player, shoe, bet)
+        visualize_cards(player)
+
         if player.get_value() > 21:
             losses += 1
             bank -= bet
