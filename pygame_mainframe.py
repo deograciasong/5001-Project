@@ -4,7 +4,6 @@ import pygame
 from constants import *
 from hand import Hand
 from deck import Deck
-import sys
 
 pygame.init()
 
@@ -12,7 +11,7 @@ clock = pygame.time.Clock()
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
-'''
+
 ###text object render
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -60,83 +59,51 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     TextSurf, TextRect = text_objects(msg, font)
     TextRect.center = ((x + (w / 2)), (y + (h / 2)))
     gameDisplay.blit(TextSurf, TextRect)
-'''
 
 
-def buttons(msg, x, y, w, h, ic, ac):
-    font = pygame.font.SysFont("Georgia", 25, bold=True)
-    surf = font.render(msg, True, "white")
-    button = pygame.Rect(x, y, w, h)
-
-    for events in pygame.event.get():
-        if events.type == pygame.MOUSEBUTTONDOWN:
-            if button.collidepoint(events.pos):
-                return msg
-    a, b = pygame.mouse.get_pos()
-    if button.x <= a <= button.x + w and button.y <= b <= button.y + h:
-        pygame.draw.rect(gameDisplay, ac, button)
-    else:
-        pygame.draw.rect(gameDisplay, ic, button)
-    gameDisplay.blit(surf, (button.x + 50, button.y + 5))
+def start_menu():
+    screen_width = display_width
+    screen_height = display_height
+    font = pygame.font.SysFont('Times New Roman', 35)
+    title = font.render("BlackJack", True, (255, 255, 255))
+    deal_text = font.render("Press Space to Deal", True, (255, 255, 255))
+    exit_text = font.render("Press ESC to Exit", True, (255, 255, 255))
+    gameDisplay.blit(title, (screen_width / 2 - title.get_width() / 2, screen_height / 2 - title.get_height() / 2))
+    gameDisplay.blit(deal_text,
+                     (screen_width / 2 - deal_text.get_width() / 2, screen_height / 2 + deal_text.get_height() / 2))
+    gameDisplay.blit(exit_text,
+                     (screen_width / 2 - exit_text.get_width() / 2, screen_height / 4 - exit_text.get_height() / 2))
     pygame.display.update()
 
 
-def player_action(player, shoe, bet):
-    """
-    performs all actions requested by the player
-    determines which button is clicked by user then acts accordingly
-    parameters: player (object: Class Hand)
-    returns: bet (int, value of the bet)
-    """
-    run = True
-    while run:
-        hit = buttons("Hit", 30, 200, 150, 50, light_slat, dark_slat)
-        if hit == "Hit":
-            player.add_card(shoe.draw_card())
-            player.calc_value()
-            if player.get_value() > 21:
-                run = False
-            print("success")
+def end_of_round_menu():
+    screen_width = display_width
+    screen_height = display_height
+    font = pygame.font.SysFont('Times New Roman', 35)
+    if bank > 0:
+        title = font.render("You" + str(win_status) + "Press Space to Deal Again or Press ESC to Exit", True,
+                            (255, 255, 255))
+    elif bank <= 0:
+        title = font.render("Game Over Press ESC to Exit", True, (255, 255, 255))
+    gameDisplay.blit(title, (screen_width / 2 - title.get_width() / 2, screen_height / 2 - title.get_height() / 2))
+    pygame.display.update()
 
-        stand = buttons("Stand", 30, 300, 150, 50, light_slat, dark_slat)
-        if stand == "Stand":
-            run = False
-            print("stand")
-
-        double = buttons("Double", 30, 400, 150, 50, light_slat, dark_slat)
-        if double == "Double":
-            player.add_card(shoe.draw_card())
-            player.calc_value()
-            bet *= 2
-            run = False
-            print("double")
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-    return bet
-
-
-def dealer_action(dealer, shoe):
-    """
-    performs all actions of a dealer once the player action is over
-    draws cards until the dealer's card values are over 16
-    """
-    while dealer.get.value() < 16:
-        dealer.add_card(shoe.draw_card)
-        dealer.calc.value()
 
 def main():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            print("hi")
             pygame.quit()
             sys.exit()
     pygame.display.update()
 
     run = True
+
+    start_menu()
+
     decks = 8
-    cut_off = 52 * decks * 0.20
+
+    shoe = 52 * decks
+    cut_off = shoe * 0.20
 
     # initialize a deck class here
     shoe = Deck()
@@ -148,78 +115,83 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?"
-                     "(gamble responsibly!)"))
+    # bank = int(input("How much money are you willing to lose?"
+    # "(gamble responsibly!)"))
 
     screen = pygame.display.set_mode([display_width, display_height])
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
     pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
 
-
-    while (shoe.get_remaining_cards() > cut_off) and run:
+    while (shoe > cut_off) and run:
         # generate user input for bet
-        bet = 1
-
+        bet = int(input("what is your bet size for the round?"))
         # create player hand (object)
         # create dealer hand (object)
-        player = Hand(cards=[], value=0)
-        dealer = Hand(cards=[], value=0)
+        """
+        player = Hand()
+        dealer = Hand()
 
         for i in range(2):
-            player.add_card(shoe.draw_card())
-            dealer.add_card(shoe.draw_card())
+            player.add_card(deck.draw_card)
+            dealer.add_card(deck.draw_card)
 
         player.calc_value()
         dealer.calc_value()
+        """
 
         # display both hands
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-        bet = player_action(player, shoe, bet)
-        if player.get_value() > 21:
+        if player.get_value > 21:
             losses += 1
             bank -= bet
             rounds += 1
+            win_status = "lost"
             continue
 
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
-        dealer_action(dealer, shoe)
-        if dealer.get_value() > 21:
+        if dealer.get_value > 21:
             wins += 1
             bank += bet
             rounds += 1
+            # win_status = "won"
             continue
 
         # determine who won
         # calculate the remaining balance of the player\
-        if player.get_value() < dealer.get_value():
+        if player.get_value < dealer.get_value:
             losses += 1
             bank -= bet
             rounds += 1
-        elif player.get_value() > dealer.get_value():
+            # win_status = "won"
+        elif player.get_value > dealer.get_value:
             wins += 1
             bank += bet
             rounds += 1
+            # win_status = "lost"
         else:
             pushes += 1
             rounds += 1
 
         # update statistics and visualize
-        gameDisplay.fill(
-            grey, pygame.Rect(200, 600, display_width, display_height)
-        )  # Clear a specific area of the display
-        statistics_text = textfont.render(
-            f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
-            True,
-            black,
-        )
-        gameDisplay.blit(statistics_text, (250, 600))
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            button("Deal", 30, 100, 150, 50, light_slat, dark_slat)
+            button("Hit", 30, 200, 150, 50, light_slat, dark_slat)
+            button("Stand", 30, 300, 150, 50, light_slat, dark_slat)
+            button("Double", 30, 400, 150, 50, light_slat, dark_slat)
+            # button("EXIT", 30, 600, 150, 50, red, dark_red)
+
+        pygame.display.flip()
+    pygame.quit()
 
 
 if __name__ == "__main__":
