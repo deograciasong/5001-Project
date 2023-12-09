@@ -13,6 +13,44 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
+def draw_cards(player, dealer, reveal):
+    """
+    Draws and displays the player's and dealer's cards on the game display.
+    If reveal is True, both dealer's cards are shown. Otherwise, only one card is shown.
+    """
+    # Display player's hand
+    player_cards = player.cards
+    for i, card in enumerate(player_cards):
+        card_text = textfont.render(str(card), True, black)
+        card_rect = pygame.Rect(600 + i * 100, 450 + i * 10, 130, 190)
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
+        pygame.draw.rect(
+            gameDisplay, red, card_rect, 5, 5
+        )  # Draw a rectangle with a border
+
+    # Display dealer's hand
+    dealer_cards = dealer.cards
+    for i, card in enumerate(dealer_cards):
+        card_text = textfont.render(str(card), True, black)
+        card_rect = pygame.Rect(600 + i * 100, 150 + i * 10, 130, 190)
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        if i == 0 and not reveal:
+            card_text = textfont.render("??", True, black)  # Hide the second card
+        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
+        pygame.draw.rect(
+            gameDisplay, red, card_rect, 5, 5
+        )  # Draw a rectangle with a border
+    # Display cards using Pygame GUI
+    player_hand_text = textfont.render("Player's Hand: ", True, black)
+    dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
+
+    gameDisplay.blit(player_hand_text, (300, 450))
+    gameDisplay.blit(dealer_hand_text, (300, 150))
+
+    pygame.display.update()
+
+
 def choose_bet():
     """
     displays a screen for the user to select which bet size they would like to choose
@@ -193,39 +231,9 @@ def main():
         player.calc_value()
         dealer.calc_value()
 
-        # Display player's hand
-        player_cards = player.cards
-        for i, card in enumerate(player_cards):
-            card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(600 + i * 100, 450 + i * 10, 130, 190)
-            pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
-            gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
-            pygame.draw.rect(
-                gameDisplay, red, card_rect, 5, 5
-            )  # Draw a rectangle with a border
-
-        # Display dealer's hand
-        dealer_cards = dealer.cards
-        for i, card in enumerate(dealer_cards):
-            card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(600 + i * 100, 150 + i * 10, 130, 190)
-            pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
-            gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
-            pygame.draw.rect(
-                gameDisplay, red, card_rect, 5, 5
-            )  # Draw a rectangle with a border
-
-        pygame.display.update()
-
-        # Display cards using Pygame GUI
-        player_hand_text = textfont.render("Player's Hand: ", True, black)
-        dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
-
-        gameDisplay.blit(player_hand_text, (300, 450))
-        gameDisplay.blit(dealer_hand_text, (300, 150))
-
-        pygame.display.update()
         # display both hands
+        # draw_cards(player, dealer, reveal=True)  # Show both dealer's cards
+        draw_cards(player, dealer, reveal=False)  # Show only one dealer's card
 
         # create a loop for player action
         # generate user input to determine action
