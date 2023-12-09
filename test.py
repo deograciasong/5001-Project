@@ -12,6 +12,43 @@ clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
+def visualize_cards(player, dealer, reveal):
+    """
+    Draws and displays the player's and dealer's cards on the game display.
+    If reveal is True, both dealer's cards are shown. Otherwise, only one card is shown.
+    """
+    # Display player's hand
+    player_cards = player.cards
+    for i, card in enumerate(player_cards):
+        card_text = textfont.render(str(card), True, black)
+        card_rect = pygame.Rect(600 + i * 100, 450 + i * 10, 130, 190)
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
+        pygame.draw.rect(
+            gameDisplay, red, card_rect, 5, 5
+        )  # Draw a rectangle with a border
+
+    # Display dealer's hand
+    dealer_cards = dealer.cards
+    for i, card in enumerate(dealer_cards):
+        card_text = textfont.render(str(card), True, black)
+        card_rect = pygame.Rect(600 + i * 100, 150 + i * 10, 130, 190)
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        if i == 0 and not reveal:
+            card_text = textfont.render("??", True, black)  # Hide the second card
+        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
+        pygame.draw.rect(
+            gameDisplay, red, card_rect, 5, 5
+        )  # Draw a rectangle with a border
+    # Display cards using Pygame GUI
+    player_hand_text = textfont.render("Player's Hand: ", True, black)
+    dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
+
+    gameDisplay.blit(player_hand_text, (300, 450))
+    gameDisplay.blit(dealer_hand_text, (300, 150))
+
+    pygame.display.update()
+
 
 def choose_bet():
     """
@@ -75,7 +112,7 @@ def choose_bet():
     return bet
 
 
-def player_action(player, shoe, bet):
+def player_action(player, shoe, bet, dealer):
     """
     performs all actions requested by the player
     determines which button is clicked by user then acts accordingly
@@ -126,7 +163,7 @@ def player_action(player, shoe, bet):
         hit_button.draw()
         stand_button.draw()
         double_button.draw()
-        visualize_cards(player)
+        visualize_cards(player, dealer, reveal=False)
 
         pygame.display.update()
     return bet
@@ -154,20 +191,6 @@ def update_display(rounds, wins, losses, pushes):
     pygame.display.update()
     time.sleep(3)
 
-
-def visualize_cards(hand):
-    # Display player's hand
-    player_cards = hand.cards
-    for i, card in enumerate(player_cards):
-        card_text = textfont.render(str(card), True, black)
-        card_rect = pygame.Rect(600 + i * 85, 450 + i * 10, 130, 190)
-        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
-        gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
-        pygame.draw.rect(
-            gameDisplay, red, card_rect, 5, 5
-        )  # Draw a rectangle with a border
-
-    pygame.display.update()
 
 
 def main():
@@ -209,24 +232,21 @@ def main():
         dealer.calc_value()
 
         # display both hands
-        visualize_cards(player)
-        visualize_cards(dealer)
 
-        # Display cards using Pygame GUI
-        player_hand_text = textfont.render("Player's Hand: ", True, black)
-        dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
-
-        gameDisplay.blit(player_hand_text, (300, 450))
-        gameDisplay.blit(dealer_hand_text, (300, 150))
-
-        pygame.display.update()
+        # # Display cards using Pygame GUI
+        # player_hand_text = textfont.render("Player's Hand: ", True, black)
+        # dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
+        #
+        # gameDisplay.blit(player_hand_text, (300, 450))
+        # gameDisplay.blit(dealer_hand_text, (300, 150))
+        #
+        # pygame.display.update()
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         print(player)
-        bet = player_action(player, shoe, bet)
-        visualize_cards(player)
+        bet = player_action(player, shoe, bet, dealer)
 
         if player.get_value() > 21:
             losses += 1
