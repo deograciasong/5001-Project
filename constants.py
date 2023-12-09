@@ -35,3 +35,5 @@ surf_stand = font.render("Stand", True, "white")
 surf_double = font.render("Double", True, "white")
 
 font_bet = pygame.font.SysFont("Georgia", 50, bold=True)
+font_startmenu = pygame.font.SysFont('Times New Roman', 35)
+
