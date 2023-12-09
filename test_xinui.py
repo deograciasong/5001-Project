@@ -119,7 +119,7 @@ def main():
         player_cards = player.cards
         for i, card in enumerate(player_cards):
             card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(600 + i * 85, 450 + i * 10, 130, 190)
+            card_rect = pygame.Rect(600 + i * 100, 450 + i * 10, 130, 190)
             pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
             gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
             pygame.draw.rect(
@@ -130,7 +130,7 @@ def main():
         dealer_cards = dealer.cards
         for i, card in enumerate(dealer_cards):
             card_text = textfont.render(str(card), True, black)
-            card_rect = pygame.Rect(600 + i * 85, 150 + i * 10, 130, 190)
+            card_rect = pygame.Rect(600 + i * 100, 150 + i * 10, 130, 190)
             pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
             gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
             pygame.draw.rect(
