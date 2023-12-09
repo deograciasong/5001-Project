@@ -12,7 +12,6 @@ clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
-
 def visualize_cards(player, dealer, reveal):
     """
     Draws and displays the player's and dealer's cards on the game display.
@@ -71,9 +70,7 @@ def choose_bet():
     run = True
     while run:
         gameDisplay.blit(scaled_image, [0, 0])
-        pygame.draw.rect(
-            gameDisplay, black, pygame.Rect(0, 250, display_width, display_height / 4)
-        )
+        pygame.draw.rect(gameDisplay, black, pygame.Rect(0, 250, display_width, display_height / 4))
 
         # event handler
         for event in pygame.event.get():
@@ -141,7 +138,7 @@ def player_action(player, shoe, bet, dealer):
 
         # checking if the hit button was clicked and acting accordingly
         if hit_button.check_click():
-            print("Hit")
+            print('Hit')
             player.add_card(shoe.draw_card())
             player.calc_value()
             print(player)
@@ -151,7 +148,7 @@ def player_action(player, shoe, bet, dealer):
         # checking if the stand button was clicked and acting accordingly
         if stand_button.check_click():
             run = False
-            print("Stand")
+            print('Stand')
 
         # checking if the double button was clicked and acting accordingly
         if double_button.check_click():
@@ -166,8 +163,8 @@ def player_action(player, shoe, bet, dealer):
         hit_button.draw()
         stand_button.draw()
         double_button.draw()
+        visualize_cards(player, dealer, reveal=False)
 
-        visualize_cards(player, dealer, reveal=False)  # Show only one dealer's card
         pygame.display.update()
     return bet
 
@@ -178,21 +175,22 @@ def dealer_action(dealer, shoe):
     draws cards until the dealer's card values are over 16
     """
     while dealer.get_value() < 16:
-        dealer.add_card(shoe.draw_card)
+        dealer.add_card(shoe.draw_card())
         dealer.calc_value()
 
 
 def update_display(rounds, wins, losses, pushes):
     # update statistics and visualize
     gameDisplay.fill(
-        grey, pygame.Rect(0, 0, display_width, display_height)
+        grey, pygame.Rect(200, 600, display_width, display_height)
     )  # Clear a specific area of the display
     statistics_text = textfont.render(
-        f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}", True, black
-    )
-    gameDisplay.blit(statistics_text, (300, 300))
+        f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}",
+        True, black)
+    gameDisplay.blit(statistics_text, (250, 600))
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(3)
+
 
 
 def main():
@@ -210,7 +208,8 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?" "(gamble responsibly!)"))
+    bank = int(input("How much money are you willing to lose?"
+                     "(gamble responsibly!)"))
 
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
@@ -233,8 +232,15 @@ def main():
         dealer.calc_value()
 
         # display both hands
-        # draw_cards(player, dealer, reveal=True)  # Show both dealer's cards
-        # draw_cards(player, dealer, reveal=False)  # Show only one dealer's card
+
+        # # Display cards using Pygame GUI
+        # player_hand_text = textfont.render("Player's Hand: ", True, black)
+        # dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
+        #
+        # gameDisplay.blit(player_hand_text, (300, 450))
+        # gameDisplay.blit(dealer_hand_text, (300, 150))
+        #
+        # pygame.display.update()
 
         # create a loop for player action
         # generate user input to determine action
