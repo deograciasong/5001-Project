@@ -257,14 +257,18 @@ def player_action(player, shoe, bet, dealer):
     return bet
 
 
-def dealer_action(dealer, shoe):
+def dealer_action(player, dealer, shoe):
     """
     performs all actions of a dealer once the player action is over
     draws cards until the dealer's card values are over 16
     """
+    visualize_cards(player, dealer, reveal=True)
+    time.sleep(1)
     while dealer.get_value() < 16:
         dealer.add_card(shoe.draw_card())
         dealer.calc_value()
+        visualize_cards(player, dealer, reveal=True)
+        time.sleep(1)
 
 
 def update_display(rounds, wins, losses, pushes):
@@ -295,8 +299,7 @@ def main():
     rounds = 0
 
     # initialize bankroll
-    bank = int(input("How much money are you willing to lose?"
-                     "(gamble responsibly!)"))
+    bank = 0
 
     pygame.display.set_caption("Pygame Blackjack!")
     gameDisplay.blit(scaled_image, [0, 0])
@@ -336,7 +339,7 @@ def main():
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
-        dealer_action(dealer, shoe)
+        dealer_action(player, dealer, shoe)
         if dealer.get_value() > 21:
             wins += 1
             bank += bet
