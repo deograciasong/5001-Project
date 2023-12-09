@@ -231,17 +231,6 @@ def main():
         player.calc_value()
         dealer.calc_value()
 
-        # display both hands
-
-        # # Display cards using Pygame GUI
-        # player_hand_text = textfont.render("Player's Hand: ", True, black)
-        # dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
-        #
-        # gameDisplay.blit(player_hand_text, (300, 450))
-        # gameDisplay.blit(dealer_hand_text, (300, 150))
-        #
-        # pygame.display.update()
-
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
