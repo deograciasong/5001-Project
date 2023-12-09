@@ -13,7 +13,7 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
-def draw_cards(player, dealer, reveal):
+def visualize_cards(player, dealer, reveal):
     """
     Draws and displays the player's and dealer's cards on the game display.
     If reveal is True, both dealer's cards are shown. Otherwise, only one card is shown.
@@ -115,7 +115,7 @@ def choose_bet():
     return bet
 
 
-def player_action(player, shoe, bet):
+def player_action(player, shoe, bet, dealer):
     """
     performs all actions requested by the player
     determines which button is clicked by user then acts accordingly
@@ -167,6 +167,7 @@ def player_action(player, shoe, bet):
         stand_button.draw()
         double_button.draw()
 
+        visualize_cards(player, dealer, reveal=False)  # Show only one dealer's card
         pygame.display.update()
     return bet
 
@@ -233,13 +234,14 @@ def main():
 
         # display both hands
         # draw_cards(player, dealer, reveal=True)  # Show both dealer's cards
-        draw_cards(player, dealer, reveal=False)  # Show only one dealer's card
+        # draw_cards(player, dealer, reveal=False)  # Show only one dealer's card
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         print(player)
-        bet = player_action(player, shoe, bet)
+        bet = player_action(player, shoe, bet, dealer)
+
         if player.get_value() > 21:
             losses += 1
             bank -= bet
