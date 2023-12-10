@@ -18,20 +18,20 @@ def start_menu():
     run = True
     while run:
         title_text = font_startmenu.render("BLACKJACK", True, (255, 255, 255))
-        deal_text = font_startmenu.render("Press Space to Deal", True, (255, 255, 255))
-        instruction_text = font_startmenu.render("Press i for instructions", True, (255, 255, 255))
+        deal_text = font_startmenu.render("Press SPACE to Deal", True, (255, 255, 255))
+        instruction_text = font_startmenu.render("Press i for Instructions & Credits", True, (255, 255, 255))
         exit_text = font_startmenu.render("Press ESC to Exit", True, (255, 255, 255))
         gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
                                       display_height / 7 - title_text.get_height() / 2))
         gameDisplay.blit(deal_text,
                          (display_width / 2 - deal_text.get_width() / 2,
-                          display_height / 2.5 - deal_text.get_height() / 2))
+                          display_height / 3.0 - deal_text.get_height() / 2))
         gameDisplay.blit(exit_text,
                          (display_width / 2 - exit_text.get_width() / 2,
                           display_height / 1.5 - exit_text.get_height() / 2))
         gameDisplay.blit(instruction_text,
                          (display_width / 2 - instruction_text.get_width() / 2,
-                          display_height / 3.5 - instruction_text.get_height() / 2))
+                          display_height / 2.25 - instruction_text.get_height() / 2))
         pygame.display.update()
         # checking which keys are pressed by players
         for event in pygame.event.get():
@@ -59,7 +59,7 @@ def instruction():
         font = pygame.font.SysFont('Times New Roman', 30)
         title_text = font.render("Instructions", True, (255, 255, 255))
         return_text = font.render("Press R to return to the start menu", True, (255, 255, 255))
-        instruction_link = font.render("Press here for instructions", True, (255, 255, 255))
+        instruction_link = font.render("Press HERE for instructions", True, (255, 255, 255))
         gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
                                  display_height / 10 - title_text.get_height() / 2))
         gameDisplay.blit(return_text, (display_width / 2 - return_text.get_width() / 2,
@@ -86,28 +86,37 @@ def instruction():
 
 
 
-def end_of_round_menu():
+def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
     gameDisplay.fill((0, 0, 0))
     run = True
     # while run is true show the start menu screen
     while run:
-        title_text = font.render("You" + win_status + " this round. "
-                            "Press Space to Deal Again or Press ESC to Exit", True,
-                            (255, 255, 255))
-        deal_text = font_startmenu.render("Press Space to Deal", True, (255, 255, 255))
-        instruction_text = font_startmenu.render("Press i for instructions", True, (255, 255, 255))
-        exit_text = font_startmenu.render("Press ESC to Exit", True, (255, 255, 255))
-        gameDisplay.blit(title_text, (display_width / 3 - title_text.get_width() / 2,
+        font = pygame.font.SysFont('Times New Roman', 30)
+        title_font = pygame.font.SysFont('Time New Roman', 50, True)
+        statistics_font = pygame.font.SysFont('Times New Roman', 25, True)
+        title_text = title_font.render("YOU " + win_status + " THIS ROUND.", True, (255, 255, 255))
+        deal_text = font.render("Press SPACE to Deal Again", True, (255, 255, 255))
+        instruction_text = font.render("Press i for Instructions", True, (255, 255, 255))
+        exit_text = font.render("Press ESC to Exit", True, (255, 255, 255))
+        statistics_text = statistics_font.render("Total Gains or Losses: " + str(bank) + " USD / "
+                                                 + "Rounds Played: " + str(rounds) + " / "
+                                                 + "Wins: " + str(wins) + " / "
+                                                 + "Losses: " + str(losses) + " / "
+                                                 + "Pushes: " + str(pushes), True, (255, 255, 255))
+        gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
                                  display_height / 7 - title_text.get_height() / 2))
         gameDisplay.blit(deal_text,
-                         (display_width / 3 - deal_text.get_width() / 2,
+                         (display_width / 2 - deal_text.get_width() / 2,
                           display_height / 2.5 - deal_text.get_height() / 2))
         gameDisplay.blit(exit_text,
-                         (display_width / 3 - exit_text.get_width() / 2,
+                         (display_width / 2 - exit_text.get_width() / 2,
                           display_height / 1.5 - exit_text.get_height() / 2))
         gameDisplay.blit(instruction_text,
-                         (display_width / 3 - instruction_text.get_width() / 2,
+                         (display_width / 2 - instruction_text.get_width() / 2,
                           display_height / 3.5 - instruction_text.get_height() / 2))
+        gameDisplay.blit(statistics_text,
+                         (display_width / 2 - statistics_text.get_width() / 2,
+                          display_height / 1.1 - statistics_text.get_height() / 2))
         pygame.display.update()
         # checking which keys are pressed by players
         for event in pygame.event.get():
@@ -361,9 +370,10 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
-            #time.sleep(2)
-            #end_of_round_menu()
             update_display(rounds, wins, losses, pushes)
+            time.sleep(0.5)
+            win_status = "lost"
+            end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
         # create loop for dealer action
@@ -374,9 +384,10 @@ def main():
             wins += 1
             bank += bet
             rounds += 1
-            #time.sleep(2)
-            #end_of_round_menu()
             update_display(rounds, wins, losses, pushes)
+            time.sleep(0.5)
+            win_status = "won"
+            end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
         # determine who won
@@ -385,19 +396,21 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
-            #time.sleep(2)
-            #end_of_round_menu()
+            win_status = "lost"
+
         elif player.get_value() > dealer.get_value():
             wins += 1
             bank += bet
             rounds += 1
-            #time.sleep(2)
-            #end_of_round_menu()
+            win_status = "won"
+
         else:
             pushes += 1
             rounds += 1
 
         update_display(rounds, wins, losses, pushes)
+        time.sleep(0.5)
+        end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
