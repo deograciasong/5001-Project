@@ -16,14 +16,13 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 def start_menu():
     gameDisplay.fill((0, 0, 0))
     run = True
-    # while run is true show the start menu screen
-    while run == True:
-        title = font_startmenu.render("BLACKJACK", True, (255, 255, 255))
+    while run:
+        title_text = font_startmenu.render("BLACKJACK", True, (255, 255, 255))
         deal_text = font_startmenu.render("Press Space to Deal", True, (255, 255, 255))
         instruction_text = font_startmenu.render("Press i for instructions", True, (255, 255, 255))
         exit_text = font_startmenu.render("Press ESC to Exit", True, (255, 255, 255))
-        gameDisplay.blit(title, (display_width / 2 - title.get_width() / 2,
-                                 display_height / 7 - title.get_height() / 2))
+        gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
+                                      display_height / 7 - title_text.get_height() / 2))
         gameDisplay.blit(deal_text,
                          (display_width / 2 - deal_text.get_width() / 2,
                           display_height / 2.5 - deal_text.get_height() / 2))
@@ -40,7 +39,7 @@ def start_menu():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.KEYDOWN:
-                # if escape key is pressed quit game
+                # if ESC is pressed, then quit the game completely
                 if event.key == pygame.K_ESCAPE:
                     run = False
                     pygame.quit()
@@ -58,16 +57,16 @@ def instruction():
     run = True
     while run:
         font = pygame.font.SysFont('Times New Roman', 30)
-        title = font.render("Instructions", True, (255, 255, 255))
+        title_text = font.render("Instructions", True, (255, 255, 255))
         return_text = font.render("Press R to return to the start menu", True, (255, 255, 255))
-        rect = font.render("Press here for instructions", True, (255, 255, 255))
-        gameDisplay.blit(title, (display_width / 2 - title.get_width() / 2,
-                                 display_height / 10 - title.get_height() / 2))
+        instruction_link = font.render("Press here for instructions", True, (255, 255, 255))
+        gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
+                                 display_height / 10 - title_text.get_height() / 2))
         gameDisplay.blit(return_text, (display_width / 2 - return_text.get_width() / 2,
                                  display_height / 5 - return_text.get_height() / 2))
-        rect = gameDisplay.blit(rect,
-                         (display_width / 2 - rect.get_width() / 2,
-                          display_height / 2 - rect.get_height() / 2))
+        instruction_link = gameDisplay.blit(instruction_link,
+                         (display_width / 2 - instruction_link.get_width() / 2,
+                          display_height / 2 - instruction_link.get_height() / 2))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -81,7 +80,7 @@ def instruction():
                     return True
                 # if the "press here" is pressed open the link to blackjack rules
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if rect.collidepoint(event.pos):
+                if instruction_link.collidepoint(event.pos):
                     webbrowser.open(r"https://bicyclecards.com/how-to-play/blackjack/")
                     pygame.display.update()
 
@@ -91,15 +90,15 @@ def end_of_round_menu():
     gameDisplay.fill((0, 0, 0))
     run = True
     # while run is true show the start menu screen
-    while run == True:
-        title = font.render("You" + win_status + " this round. "
+    while run:
+        title_text = font.render("You" + win_status + " this round. "
                             "Press Space to Deal Again or Press ESC to Exit", True,
                             (255, 255, 255))
         deal_text = font_startmenu.render("Press Space to Deal", True, (255, 255, 255))
         instruction_text = font_startmenu.render("Press i for instructions", True, (255, 255, 255))
         exit_text = font_startmenu.render("Press ESC to Exit", True, (255, 255, 255))
-        gameDisplay.blit(title, (display_width / 3 - title.get_width() / 2,
-                                 display_height / 7 - title.get_height() / 2))
+        gameDisplay.blit(title_text, (display_width / 3 - title_text.get_width() / 2,
+                                 display_height / 7 - title_text.get_height() / 2))
         gameDisplay.blit(deal_text,
                          (display_width / 3 - deal_text.get_width() / 2,
                           display_height / 2.5 - deal_text.get_height() / 2))
