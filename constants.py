@@ -17,6 +17,7 @@ dark_red = (255, 0, 0)
 pygame.init()
 font = pygame.font.SysFont("Arial", 20)
 textfont = pygame.font.SysFont("Comic Sans MS", 35)
+textlargerfont = pygame.font.SysFont("Comic Sans MS", 50)
 game_end = pygame.font.SysFont("dejavusans", 100)
 blackjack = pygame.font.SysFont("roboto", 70)
 
@@ -35,5 +36,4 @@ surf_stand = font.render("Stand", True, "white")
 surf_double = font.render("Double", True, "white")
 
 font_bet = pygame.font.SysFont("Georgia", 50, bold=True)
-font_startmenu = pygame.font.SysFont('Times New Roman', 35)
-
+font_startmenu = pygame.font.SysFont("Times New Roman", 35)
