@@ -395,17 +395,24 @@ def dealer_action(player, dealer, shoe):
         time.sleep(1)
 
 
-def update_display(rounds, wins, losses, pushes):
-    # update statistics and visualize
-    gameDisplay.fill(
-        grey, pygame.Rect(200, 600, display_width, display_height)
-    )  # Clear a specific area of the display
-    statistics_text = textfont.render(
-        f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}", True, black
-    )
-    gameDisplay.blit(statistics_text, (250, 600))
-    pygame.display.update()
-    time.sleep(3)
+# def update_display(rounds, wins, losses, pushes):
+#     # update statistics and visualize
+#     gameDisplay.fill(
+#         grey, pygame.Rect(200, 600, display_width, display_height)
+#     )  # Clear a specific area of the display
+#     statistics_text = textfont.render(
+#         f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}", True, black
+#     )
+#     gameDisplay.blit(statistics_text, (250, 600))
+#     pygame.display.update()
+#     time.sleep(3)
+
+
+def display_instant_result(txt, x, y, rounds, wins, losses, pushes):
+    txt_display = textlargerfont.render(txt, True, red)  # Create a text surface
+    gameDisplay.blit(txt_display, (x, y))  # Display the text
+    pygame.display.update()  # Update the display
+    time.sleep(2)
 
 
 def main():
@@ -447,63 +454,56 @@ def main():
         player.calc_value()
         dealer.calc_value()
 
+        gameDisplay.blit(scaled_image, [0, 0])
+        pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
+
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
-        print(player)
-
-        bet = player_action(player, shoe, bet, dealer)
-
         if player.get_value() == 21 and dealer.get_value() != 21:
             wins += 1
             bank += bet
             rounds += 1
-
-            blackjack_text = textlargerfont.render(
-                "BlackJack", True, red
-            )  # Create a text surface
-            gameDisplay.blit(blackjack_text, (900, 350))  # Display the text
-            pygame.display.update()  # Update the display
-            update_display(rounds, wins, losses, pushes)
-            time.sleep(0.5)
-
+            display_instant_result("BlackJack", 900, 350, rounds, wins, losses, pushes)
             win_status = "won"
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
+
+        if dealer.get_value() == 21 and player.get_value() != 21:
+            losses += 1
+            bank -= bet
+            rounds += 1
+            display_instant_result("Dealer Blackjack", 800, 50, rounds, wins, losses, pushes)
+            win_status = "lost"
+            end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
+            continue
+
+        bet = player_action(player, shoe, bet, dealer)
 
         if player.get_value() > 21:
             losses += 1
             bank -= bet
             rounds += 1
-            busted_text = textlargerfont.render(
-                "You Busted", True, red
-            )  # Create a text surface
-            gameDisplay.blit(busted_text, (900, 350))  # Display the text
-            pygame.display.update()  # Update the display
-            update_display(rounds, wins, losses, pushes)
-            time.sleep(0.5)
+            display_instant_result("You Busted", 900, 350, rounds, wins, losses, pushes)
             win_status = "lost"
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
+        time.sleep(2)
         dealer_action(player, dealer, shoe)
+
         if dealer.get_value() > 21:
             wins += 1
             bank += bet
             rounds += 1
-            dealer_busted_text = textlargerfont.render(
-                "Dealer Busted", True, black
-            )  # Create a text surface
-            gameDisplay.blit(dealer_busted_text, (800, 50))  # Display the text
-            pygame.display.update()  # Update the display
-            update_display(rounds, wins, losses, pushes)
-            time.sleep(0.5)
+            display_instant_result("Dealer Busted", 800, 50, rounds, wins, losses, pushes)
             win_status = "won"
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
-        print(dealer)
+
+        time.sleep(3)
         # determine who won
         # calculate the remaining balance of the player
         if player.get_value() < dealer.get_value():
@@ -521,9 +521,8 @@ def main():
         else:
             pushes += 1
             rounds += 1
+            win_status = "push"
 
-        update_display(rounds, wins, losses, pushes)
-        time.sleep(0.5)
         end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
 
         for event in pygame.event.get():

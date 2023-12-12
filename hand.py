@@ -44,10 +44,10 @@ class Hand:
             value += CARD_VALUE[card]
 
         for card in aces:
-            if value <= 10:
-                value += 11
-            else:
-                value += 1
+            value += 1
+            if value <= 11:
+                value += 10
+
 
         self.value = value
 
