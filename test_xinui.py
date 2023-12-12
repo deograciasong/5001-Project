@@ -220,26 +220,37 @@ def visualize_cards(player, dealer, reveal):
     player_cards = player.cards
     for i, card in enumerate(player_cards):
         card_text = textfont.render(str(card), True, black)
-        card_rect = pygame.Rect(600 + i * 100, 450 + i * 10, 130, 190)
-        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        # even number index cards are drawn in a straight line
+        if i % 2 == 0:
+            card_rect = pygame.Rect(600 + i * 100, 450, 130, 190)
+        # odd number index cards are drawn in a the position  lower than the even number index cards
+        else:
+            card_rect = pygame.Rect(600 + i * 100, 460, 130, 190)
+        # Draw a rectangle
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)
         gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
-        pygame.draw.rect(
-            gameDisplay, red, card_rect, 5, 5
-        )  # Draw a rectangle with a border
+        # Draw a rectangle with a border
+        pygame.draw.rect(gameDisplay, red, card_rect, 5, 5)
 
     # Display dealer's hand
     dealer_cards = dealer.cards
     for i, card in enumerate(dealer_cards):
         card_text = textfont.render(str(card), True, black)
-        card_rect = pygame.Rect(600 + i * 100, 150 + i * 10, 130, 190)
-        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)  # Draw a rectangle
+        # even number index cards are drawn in a straight line
+        if i % 2 == 0:
+            card_rect = pygame.Rect(600 + i * 100, 150, 130, 190)
+        # odd number index cards are drawn in a the position  lower than the even number index cards
+        else:
+            card_rect = pygame.Rect(600 + i * 100, 160, 130, 190)
+        # Draw a rectangle
+        pygame.draw.rect(gameDisplay, white, card_rect, 0, 5)
+        # Hide the second card if reveal is False
         if i == 0 and not reveal:
-            card_text = textfont.render("??", True, black)  # Hide the second card
+            card_text = textfont.render("??", True, black)
         gameDisplay.blit(card_text, (card_rect.x + 10, card_rect.y + 10))
-        pygame.draw.rect(
-            gameDisplay, red, card_rect, 5, 5
-        )  # Draw a rectangle with a border
-    # Display cards using Pygame GUI
+        # Draw a rectangle with a border
+        pygame.draw.rect(gameDisplay, red, card_rect, 5, 5)
+
     player_hand_text = textfont.render("Player's Hand: ", True, black)
     dealer_hand_text = textfont.render("Dealer's Hand: ", True, black)
 
