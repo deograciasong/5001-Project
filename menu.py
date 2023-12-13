@@ -1,4 +1,5 @@
 import pygame
+import webbrowser
 from constants import *
 
 pygame.init()
@@ -29,8 +30,7 @@ def start_menu():
         for event in pygame.event.get():
             # quit game
             if event.type == pygame.QUIT:
-                run = False
-                return run
+                pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 # if ESC is pressed, then quit the game completely
                 if event.key == pygame.K_ESCAPE:
@@ -74,8 +74,7 @@ def instruction():
         for event in pygame.event.get():
             # quit game
             if event.type == pygame.QUIT:
-                run = False
-                return run
+                pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 # if r is pressed return True to return to start menu
                 if event.key == pygame.K_r:
@@ -142,8 +141,7 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
         for event in pygame.event.get():
             # quit game
             if event.type == pygame.QUIT:
-                run = False
-                return run
+                pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 # if escape key is pressed quit game
                 if event.key == pygame.K_ESCAPE:
