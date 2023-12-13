@@ -11,6 +11,11 @@ from button import Button
 clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
+pygame.mixer.init()
+sound_effect = pygame.mixer.Sound("card_sound.mp3")
+win_effect = pygame.mixer.Sound("win_sound.mp3")
+lose_effect = pygame.mixer.Sound("lose_sound.mp3")
+menu_effect = pygame.mixer.Sound("menu_sound.mp3")
 
 
 def start_menu():
@@ -267,7 +272,7 @@ def choose_bet():
     parameters: None
     returns: bet (int)
     """
-
+    menu_effect.play()
     # creating a button for the betting options
     button_5 = Button("$5", 30, 315, 150, 50)
     button_10 = Button("$10", 280, 315, 150, 50)
@@ -324,6 +329,7 @@ def choose_bet():
 
         pygame.display.update()
     run = True
+    menu_effect.stop()
     return run, bet
 
 
@@ -354,24 +360,21 @@ def player_action(player, shoe, bet, dealer):
 
         # checking if the hit button was clicked and acting accordingly
         if hit_button.check_click():
-            print("Hit")
             player.add_card(shoe.draw_card())
             player.calc_value()
-            print(player)
+            sound_effect.play()
             if player.get_value() > 21:
                 run = False
 
         # checking if the stand button was clicked and acting accordingly
         if stand_button.check_click():
             run = False
-            print("Stand")
 
         # checking if the double button was clicked and acting accordingly
         if double_button.check_click():
-            print("Double")
             player.add_card(shoe.draw_card())
             player.calc_value()
-            print(player)
+            sound_effect.play()
             bet *= 2
             run = False
 
@@ -392,11 +395,13 @@ def dealer_action(player, dealer, shoe):
     draws cards until the dealer's card values are over 16
     """
     visualize_cards(player, dealer, reveal=True)
+    sound_effect.play()
     time.sleep(1)
     while dealer.get_value() <= 16:
         dealer.add_card(shoe.draw_card())
         dealer.calc_value()
         visualize_cards(player, dealer, reveal=True)
+        sound_effect.play()
         time.sleep(1)
 
 
@@ -441,25 +446,32 @@ def main():
         player = Hand(cards=[], value=0)
         dealer = Hand(cards=[], value=0)
 
+        gameDisplay.blit(scaled_image, [0, 0])
+        pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
+
         for i in range(2):
             player.add_card(shoe.draw_card())
+            visualize_cards(player, dealer, reveal=False)
+            sound_effect.play()
+            time.sleep(0.5)
             dealer.add_card(shoe.draw_card())
+            visualize_cards(player, dealer, reveal=False)
+            sound_effect.play()
+            time.sleep(0.5)
 
         player.calc_value()
         dealer.calc_value()
-
-        gameDisplay.blit(scaled_image, [0, 0])
-        pygame.draw.rect(gameDisplay, grey, pygame.Rect(0, 0, 220, 700))
 
         # create a loop for player action
         # generate user input to determine action
         # display new player hand
         if player.get_value() == 21 and dealer.get_value() != 21:
             wins += 1
-            bank += bet
+            bank += 1.5 * bet
             rounds += 1
             display_instant_result("BlackJack", 900, 350, rounds, wins, losses, pushes)
             win_status = "won"
+            win_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
@@ -467,11 +479,14 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
+            visualize_cards(player, dealer, reveal=True)
             display_instant_result("Dealer Blackjack", 800, 50, rounds, wins, losses, pushes)
             win_status = "lost"
+            lose_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
+        # player's turn to act
         run, bet = player_action(player, shoe, bet, dealer)
         if not run:
             continue
@@ -482,12 +497,13 @@ def main():
             rounds += 1
             display_instant_result("You Busted", 900, 350, rounds, wins, losses, pushes)
             win_status = "lost"
+            lose_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
         # create loop for dealer action
         # hit until can no longer hit or bust
         # display new dealer hand
-        time.sleep(2)
+        time.sleep(1)
         dealer_action(player, dealer, shoe)
 
         if dealer.get_value() > 21:
@@ -496,10 +512,11 @@ def main():
             rounds += 1
             display_instant_result("Dealer Busted", 800, 50, rounds, wins, losses, pushes)
             win_status = "won"
+            win_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
-        time.sleep(3)
+        time.sleep(1)
         # determine who won
         # calculate the remaining balance of the player
         if player.get_value() < dealer.get_value():
@@ -507,12 +524,14 @@ def main():
             bank -= bet
             rounds += 1
             win_status = "lost"
+            lose_effect.play()
 
         elif player.get_value() > dealer.get_value():
             wins += 1
             bank += bet
             rounds += 1
             win_status = "won"
+            win_effect.play()
 
         else:
             pushes += 1

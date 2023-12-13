@@ -43,9 +43,11 @@ class Hand:
         for card in non_aces:
             value += CARD_VALUE[card]
 
+        count = 0
         for card in aces:
             value += 1
-            if value <= 11:
+            count += 1
+            if value <= 11 and len(aces) == count:
                 value += 10
 
 
