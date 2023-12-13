@@ -79,7 +79,7 @@ def instruction():
             elif event.type == pygame.KEYDOWN:
                 # if r is pressed return True to return to start menu
                 if event.key == pygame.K_r:
-                    gameDisplay.blit(scaled_image, [0, 0])
+                    gameDisplay.blit(scaled_menu_image, [0, 0])
                     return True
                 # if the "press here" is pressed open the link to blackjack rules
             elif event.type == pygame.MOUSEBUTTONDOWN:
