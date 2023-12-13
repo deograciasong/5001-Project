@@ -197,6 +197,7 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
             # quit game
             if event.type == pygame.QUIT:
                 run = False
+                return run
             elif event.type == pygame.KEYDOWN:
                 # if escape key is pressed quit game
                 if event.key == pygame.K_ESCAPE:
@@ -289,6 +290,7 @@ def choose_bet():
             # quit game
             if event.type == pygame.QUIT:
                 run = False
+                return run, bet
 
         # checking if a button was clicked and acting accordingly
         if button_5.check_click():
@@ -321,7 +323,8 @@ def choose_bet():
         gameDisplay.blit(surf, (550, 95))
 
         pygame.display.update()
-    return bet
+    run = True
+    return run, bet
 
 
 def player_action(player, shoe, bet, dealer):
@@ -347,6 +350,7 @@ def player_action(player, shoe, bet, dealer):
             # quit game
             if event.type == pygame.QUIT:
                 run = False
+                return run, bet
 
         # checking if the hit button was clicked and acting accordingly
         if hit_button.check_click():
@@ -378,7 +382,8 @@ def player_action(player, shoe, bet, dealer):
         visualize_cards(player, dealer, reveal=False)
 
         pygame.display.update()
-    return bet
+    run = True
+    return run, bet
 
 
 def dealer_action(player, dealer, shoe):
@@ -393,19 +398,6 @@ def dealer_action(player, dealer, shoe):
         dealer.calc_value()
         visualize_cards(player, dealer, reveal=True)
         time.sleep(1)
-
-
-# def update_display(rounds, wins, losses, pushes):
-#     # update statistics and visualize
-#     gameDisplay.fill(
-#         grey, pygame.Rect(200, 600, display_width, display_height)
-#     )  # Clear a specific area of the display
-#     statistics_text = textfont.render(
-#         f"Rounds: {rounds} Wins: {wins} Losses: {losses} Pushes: {pushes}", True, black
-#     )
-#     gameDisplay.blit(statistics_text, (250, 600))
-#     pygame.display.update()
-#     time.sleep(3)
 
 
 def display_instant_result(txt, x, y, rounds, wins, losses, pushes):
@@ -440,7 +432,9 @@ def main():
 
     while (shoe.get_remaining_cards() > cut_off) and run:
         # generate user input for bet
-        bet = choose_bet()
+        run, bet = choose_bet()
+        if not run:
+            continue
 
         # create player hand (object)
         # create dealer hand (object)
@@ -478,7 +472,9 @@ def main():
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
-        bet = player_action(player, shoe, bet, dealer)
+        run, bet = player_action(player, shoe, bet, dealer)
+        if not run:
+            continue
 
         if player.get_value() > 21:
             losses += 1
@@ -523,7 +519,7 @@ def main():
             rounds += 1
             win_status = "push"
 
-        end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
+        run = end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
