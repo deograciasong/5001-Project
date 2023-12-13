@@ -13,209 +13,20 @@ clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.mixer.init()
-sound_effect = pygame.mixer.Sound("card_sound.mp3")
-win_effect = pygame.mixer.Sound("win_sound.mp3")
-lose_effect = pygame.mixer.Sound("lose_sound.mp3")
-menu_effect = pygame.mixer.Sound("menu_sound.mp3")
 
 
-# def start_menu():
-#     gameDisplay.fill((0, 0, 0))
-#     run = True
-#     while run:
-#         title_text = font_startmenu.render("BLACKJACK", True, (255, 255, 255))
-#         deal_text = font_startmenu.render("Press SPACE to Deal", True, (255, 255, 255))
-#         instruction_text = font_startmenu.render(
-#             "Press i for Instructions & Credits", True, (255, 255, 255)
-#         )
-#         exit_text = font_startmenu.render("Press ESC to Exit", True, (255, 255, 255))
-#         gameDisplay.blit(
-#             title_text,
-#             (
-#                 display_width / 2 - title_text.get_width() / 2,
-#                 display_height / 7 - title_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             deal_text,
-#             (
-#                 display_width / 2 - deal_text.get_width() / 2,
-#                 display_height / 3.0 - deal_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             exit_text,
-#             (
-#                 display_width / 2 - exit_text.get_width() / 2,
-#                 display_height / 1.5 - exit_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             instruction_text,
-#             (
-#                 display_width / 2 - instruction_text.get_width() / 2,
-#                 display_height / 2.25 - instruction_text.get_height() / 2,
-#             ),
-#         )
-#         pygame.display.update()
-#         # checking which keys are pressed by players
-#         for event in pygame.event.get():
-#             # quit game
-#             if event.type == pygame.QUIT:
-#                 run = False
-#             elif event.type == pygame.KEYDOWN:
-#                 # if ESC is pressed, then quit the game completely
-#                 if event.key == pygame.K_ESCAPE:
-#                     run = False
-#                     pygame.quit()
-#                 # if i is pressed change to the instruction screen
-#                 elif event.key == pygame.K_i:
-#                     instruction()
-#                 # if d is pressed continue on the main function
-#                 elif event.key == pygame.K_SPACE:
-#                     return True
-#     return run
-#
-#
-# def instruction():
-#     gameDisplay.fill((0, 0, 0))
-#     run = True
-#     while run:
-#         font = pygame.font.SysFont("Times New Roman", 30)
-#         title_text = font.render("Instructions", True, (255, 255, 255))
-#         return_text = font.render(
-#             "Press R to return to the start menu", True, (255, 255, 255)
-#         )
-#         instruction_link = font.render(
-#             "Press HERE for instructions", True, (255, 255, 255)
-#         )
-#         gameDisplay.blit(
-#             title_text,
-#             (
-#                 display_width / 2 - title_text.get_width() / 2,
-#                 display_height / 10 - title_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             return_text,
-#             (
-#                 display_width / 2 - return_text.get_width() / 2,
-#                 display_height / 5 - return_text.get_height() / 2,
-#             ),
-#         )
-#         instruction_link = gameDisplay.blit(
-#             instruction_link,
-#             (
-#                 display_width / 2 - instruction_link.get_width() / 2,
-#                 display_height / 2 - instruction_link.get_height() / 2,
-#             ),
-#         )
-#         pygame.display.update()
-#
-#         for event in pygame.event.get():
-#             # quit game
-#             if event.type == pygame.QUIT:
-#                 run = False
-#             elif event.type == pygame.KEYDOWN:
-#                 # if r is pressed return True to return to start menu
-#                 if event.key == pygame.K_r:
-#                     gameDisplay.fill((0, 0, 0))
-#                     return True
-#                 # if the "press here" is pressed open the link to blackjack rules
-#             elif event.type == pygame.MOUSEBUTTONDOWN:
-#                 if instruction_link.collidepoint(event.pos):
-#                     webbrowser.open(r"https://bicyclecards.com/how-to-play/blackjack/")
-#                     pygame.display.update()
-#
-#
-# def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
-#     gameDisplay.fill((0, 0, 0))
-#     run = True
-#     # while run is true show the start menu screen
-#     while run:
-#         font = pygame.font.SysFont("Times New Roman", 30)
-#         title_font = pygame.font.SysFont("Time New Roman", 50, True)
-#         statistics_font = pygame.font.SysFont("Times New Roman", 25, True)
-#         title_text = title_font.render(
-#             "YOU " + win_status + " THIS ROUND.", True, (255, 255, 255)
-#         )
-#         deal_text = font.render("Press SPACE to Deal Again", True, (255, 255, 255))
-#         instruction_text = font.render(
-#             "Press i for Instructions", True, (255, 255, 255)
-#         )
-#         exit_text = font.render("Press ESC to Exit", True, (255, 255, 255))
-#         statistics_text = statistics_font.render(
-#             "Total Gains or Losses: "
-#             + str(bank)
-#             + " USD / "
-#             + "Rounds Played: "
-#             + str(rounds)
-#             + " / "
-#             + "Wins: "
-#             + str(wins)
-#             + " / "
-#             + "Losses: "
-#             + str(losses)
-#             + " / "
-#             + "Pushes: "
-#             + str(pushes),
-#             True,
-#             (255, 255, 255),
-#         )
-#         gameDisplay.blit(
-#             title_text,
-#             (
-#                 display_width / 2 - title_text.get_width() / 2,
-#                 display_height / 7 - title_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             deal_text,
-#             (
-#                 display_width / 2 - deal_text.get_width() / 2,
-#                 display_height / 2.5 - deal_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             exit_text,
-#             (
-#                 display_width / 2 - exit_text.get_width() / 2,
-#                 display_height / 1.5 - exit_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             instruction_text,
-#             (
-#                 display_width / 2 - instruction_text.get_width() / 2,
-#                 display_height / 3.5 - instruction_text.get_height() / 2,
-#             ),
-#         )
-#         gameDisplay.blit(
-#             statistics_text,
-#             (
-#                 display_width / 2 - statistics_text.get_width() / 2,
-#                 display_height / 1.1 - statistics_text.get_height() / 2,
-#             ),
-#         )
-#         pygame.display.update()
-#         # checking which keys are pressed by players
-#         for event in pygame.event.get():
-#             # quit game
-#             if event.type == pygame.QUIT:
-#                 run = False
-#                 return run
-#             elif event.type == pygame.KEYDOWN:
-#                 # if escape key is pressed quit game
-#                 if event.key == pygame.K_ESCAPE:
-#                     run = False
-#                     pygame.quit()
-#                 # if i is pressed change to the instruction screen
-#                 elif event.key == pygame.K_i:
-#                     instruction()
-#                 # if d is pressed continue on the main function
-#                 elif event.key == pygame.K_SPACE:
-#                     return True
-#     return run
+def display_instant_result(txt, x, y):
+    """
+    displays the result of the game if the round is ended early
+    parameters: txt (string of result)
+                x (int of x coordinate)
+                y (int of y coordinate)
+    returns: None
+    """
+    txt_display = textlargerfont.render(txt, True, red)  # Create a text surface
+    gameDisplay.blit(txt_display, (x, y))  # Display the text
+    pygame.display.update()  # Update the display
+    time.sleep(2)
 
 
 def visualize_cards(player, dealer, reveal):
@@ -406,13 +217,6 @@ def dealer_action(player, dealer, shoe):
         time.sleep(1)
 
 
-def display_instant_result(txt, x, y, rounds, wins, losses, pushes):
-    txt_display = textlargerfont.render(txt, True, red)  # Create a text surface
-    gameDisplay.blit(txt_display, (x, y))  # Display the text
-    pygame.display.update()  # Update the display
-    time.sleep(2)
-
-
 def main():
     run = True
     decks = 8
@@ -470,9 +274,17 @@ def main():
             wins += 1
             bank += 1.5 * bet
             rounds += 1
-            display_instant_result("BlackJack", 900, 350, rounds, wins, losses, pushes)
+            display_instant_result("BlackJack", 900, 350)
             win_status = "won"
             win_effect.play()
+            end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
+            continue
+
+        if player.get_value() == 21 and dealer.get_value() == 21:
+            pushes += 1
+            rounds += 1
+            display_instant_result("Double Blackjack", 900, 350)
+            win_status = "push"
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
@@ -481,7 +293,7 @@ def main():
             bank -= bet
             rounds += 1
             visualize_cards(player, dealer, reveal=True)
-            display_instant_result("Dealer Blackjack", 800, 50, rounds, wins, losses, pushes)
+            display_instant_result("Dealer Blackjack", 800, 50)
             win_status = "lost"
             lose_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
@@ -496,7 +308,7 @@ def main():
             losses += 1
             bank -= bet
             rounds += 1
-            display_instant_result("You Busted", 900, 350, rounds, wins, losses, pushes)
+            display_instant_result("You Busted", 900, 350)
             win_status = "lost"
             lose_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
@@ -511,7 +323,7 @@ def main():
             wins += 1
             bank += bet
             rounds += 1
-            display_instant_result("Dealer Busted", 800, 50, rounds, wins, losses, pushes)
+            display_instant_result("Dealer Busted", 800, 50)
             win_status = "won"
             win_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
@@ -540,11 +352,6 @@ def main():
             win_status = "push"
 
         run = end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            pygame.display.flip()
     pygame.quit()
 
 

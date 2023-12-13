@@ -39,3 +39,8 @@ surf_double = font.render("Double", True, "white")
 
 font_bet = pygame.font.SysFont("Georgia", 50, bold=True)
 font_startmenu = pygame.font.SysFont("Times New Roman", 35)
+
+sound_effect = pygame.mixer.Sound("sounds/card_sound.mp3")
+win_effect = pygame.mixer.Sound("sounds/win_sound.mp3")
+lose_effect = pygame.mixer.Sound("sounds/lose_sound.mp3")
+menu_effect = pygame.mixer.Sound("sounds/menu_sound.mp3")
