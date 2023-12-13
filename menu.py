@@ -5,7 +5,7 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 def start_menu():
-    gameDisplay.blit(scaled_image, [0, 0])
+    gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
     while run:
         font = pygame.font.SysFont('Times New Roman', 40)
@@ -46,7 +46,7 @@ def start_menu():
 
 
 def instruction():
-    gameDisplay.blit(scaled_image, [0, 0])
+    gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
     while run:
         font = pygame.font.SysFont('Times New Roman', 35)
@@ -91,7 +91,7 @@ def instruction():
 
 
 def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
-    gameDisplay.blit(scaled_image, [0, 0])
+    gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
     # while run is true show the start menu screen
     while run:

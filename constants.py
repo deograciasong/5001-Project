@@ -5,7 +5,9 @@ display_height = 700
 
 background_color = (34, 139, 34)
 background_image = pygame.image.load("png/background.jpg")
+menu_background_image = pygame.image.load("png/menu_background.jpg")
 scaled_image = pygame.transform.scale(background_image, (display_width, display_height))
+scaled_menu_image = pygame.transform.scale(menu_background_image, (display_width, display_height))
 grey = (220, 220, 220)
 white = (255, 255, 255)
 black = (0, 0, 0)
