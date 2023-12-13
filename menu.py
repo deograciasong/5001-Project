@@ -96,9 +96,9 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
     # while run is true show the start menu screen
     while run:
         font = pygame.font.SysFont('Times New Roman', 33)
-        title_font = pygame.font.SysFont('Times New Roman', 40, True)
-        statistics_font = pygame.font.SysFont('Times New Roman', 33, True)
-        exit_font = pygame.font.SysFont('Times New Roman', 37, True)
+        title_font = pygame.font.SysFont('Times New Roman', 40, False)
+        statistics_font = pygame.font.SysFont('Times New Roman', 33, False)
+        exit_font = pygame.font.SysFont('Times New Roman', 37, False)
         title_text = title_font.render("YOU " + win_status + " THIS ROUND.", True, (255, 0, 0))
         deal_text = font.render("Press SPACE to Deal Again", True, (255, 255, 255))
         instruction_text = font.render("Press i for Instructions", True, (255, 255, 255))

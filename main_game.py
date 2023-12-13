@@ -9,6 +9,8 @@ from deck import Deck
 from button import Button
 from menu import *
 
+
+# initializing pygame
 clock = pygame.time.Clock()
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
@@ -41,7 +43,7 @@ def visualize_cards(player, dealer, reveal):
         # even number index cards are drawn in a straight line
         if i % 2 == 0:
             card_rect = pygame.Rect(600 + i * 100, 450, 130, 190)
-        # odd number index cards are drawn in a the position  lower than the even number index cards
+        # odd number index cards are drawn in the position  lower than the even number index cards
         else:
             card_rect = pygame.Rect(600 + i * 100, 460, 130, 190)
         # Draw a rectangle
@@ -57,7 +59,7 @@ def visualize_cards(player, dealer, reveal):
         # even number index cards are drawn in a straight line
         if i % 2 == 0:
             card_rect = pygame.Rect(600 + i * 100, 150, 130, 190)
-        # odd number index cards are drawn in a the position  lower than the even number index cards
+        # odd number index cards are drawn in the position  lower than the even number index cards
         else:
             card_rect = pygame.Rect(600 + i * 100, 160, 130, 190)
         # Draw a rectangle
@@ -218,7 +220,6 @@ def dealer_action(player, dealer, shoe):
 
 
 def main():
-    run = True
     decks = 8
     cut_off = 52 * decks * 0.20
 
