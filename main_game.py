@@ -211,6 +211,7 @@ def dealer_action(player, dealer, shoe):
     visualize_cards(player, dealer, reveal=True)
     sound_effect.play()
     time.sleep(1)
+    # while dealer's hand is less than 16, add card to dealer hand
     while dealer.get_value() <= 16:
         dealer.add_card(shoe.draw_card())
         dealer.calc_value()

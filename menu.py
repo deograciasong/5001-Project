@@ -2,13 +2,16 @@ import pygame
 import webbrowser
 from constants import *
 
+# initializing display
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
 def start_menu():
+    # display the background image for the start menu
     gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
+    # while run is true display title, text, instructions to the screen
     while run:
         font = pygame.font.SysFont('Times New Roman', 40)
         title_text = font.render("BLACKJACK", True, (255, 255, 255))
@@ -26,10 +29,11 @@ def start_menu():
         gameDisplay.blit(instruction_text,
                          (display_width / 2 - instruction_text.get_width() / 2,
                           display_height / 2.25 - instruction_text.get_height() / 2))
+        # update the display
         pygame.display.update()
-        # checking which keys are pressed by players
+        # handling action when respective key is pressed
         for event in pygame.event.get():
-            # quit game
+            # if x box is pressed, quit game
             if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
@@ -47,8 +51,10 @@ def start_menu():
 
 
 def instruction():
+    # display the background image for the instruction menu
     gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
+    # while run is true display title and text to the screen
     while run:
         font = pygame.font.SysFont('Times New Roman', 35)
         credit_font = pygame.font.SysFont('Times New Roman', 25)
@@ -70,29 +76,33 @@ def instruction():
         instruction_link = gameDisplay.blit(instruction_link,
                                             (display_width / 2 - instruction_link.get_width() / 2,
                                              display_height / 2 - instruction_link.get_height() / 2))
+        # update the display
         pygame.display.update()
-
+        # handling action when respective key is pressed
         for event in pygame.event.get():
-            # quit game
+            # if x box is pressed, quit game
             if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 # if r is pressed return True to return to start menu
                 if event.key == pygame.K_r:
+                    # reset the background image
                     gameDisplay.blit(scaled_menu_image, [0, 0])
                     return True
-                # if the "press here" is pressed open the link to blackjack rules
+            # if the "press here" is pressed open the link to blackjack rules
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if instruction_link.collidepoint(event.pos):
                     webbrowser.open(r"https://bicyclecards.com/how-to-play/blackjack/")
+                    # update display
                     pygame.display.update()
     return run
 
 
 def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
+    # display the background image for the end of round menu
     gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
-    # while run is true show the start menu screen
+    # while run is true display the text for instructions/statistics
     while run:
         font = pygame.font.SysFont('Times New Roman', 33)
         title_font = pygame.font.SysFont('Times New Roman', 40, False)
@@ -137,21 +147,21 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
                          (display_width / 1.3 - losses_text.get_width() / 2,
                           display_height / 2.16 - losses_text.get_height() / 2))
         pygame.display.update()
-        # checking which keys are pressed by players
+        # handling action when respective key is pressed
         for event in pygame.event.get():
-            # quit game
+            # if x box is pressed, quit game
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return False
             elif event.type == pygame.KEYDOWN:
-                # if escape key is pressed quit game
+                # if escape key is pressed quit the game completely
                 if event.key == pygame.K_ESCAPE:
                     run = False
                     pygame.quit()
                 # if i is pressed change to the instruction screen
                 elif event.key == pygame.K_i:
                     instruction()
-                # if d is pressed continue on the main function
+                # if d is pressed continue on the main game function
                 elif event.key == pygame.K_SPACE:
                     return True
     return run
