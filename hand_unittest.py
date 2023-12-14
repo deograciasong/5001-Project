@@ -24,7 +24,7 @@ class TestHand(unittest.TestCase):
         """
         Test the calc_value method.
         """
-        # Test case 1: Hand with 'A' and 'K' should have a value of 21
+        # Test case 1: Hand with '2' and '4' should have a value of 6
         self.hand = Hand(cards=[], value=0)
         self.hand.add_card("2")
         self.hand.add_card("4")
@@ -56,7 +56,7 @@ class TestHand(unittest.TestCase):
         self.assertEqual(self.hand.value, 13)
 
     def test_get_value(self):
-        # Test case 1: Hand with 'A' and 'K' should have a value of 21
+        # Test case 1: Hand with '6' and '8' should have a value of 14
         self.hand = Hand(cards=[], value=0)
         self.hand.add_card("6")
         self.hand.add_card("8")
