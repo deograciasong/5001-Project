@@ -5,6 +5,7 @@ from constants import *
 pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
+
 def start_menu():
     gameDisplay.blit(scaled_menu_image, [0, 0])
     run = True
@@ -54,21 +55,21 @@ def instruction():
         title_text = font.render("Instructions & Credit", True, (255, 255, 255))
         return_text = font.render("Press R to return to the start menu", True, (255, 255, 255))
         credit_text_1 = credit_font.render("Northeastern University CS 5001 Final Project", True,
-                                    (255, 255, 255))
+                                           (255, 255, 255))
         credit_text_2 = credit_font.render("Created by: Byunghyun Ko, Deo Gracias Ong, Xinrui Yi", True,
-                                    (255, 255, 255))
+                                           (255, 255, 255))
         instruction_link = font.render("Press HERE for instructions", True, (255, 255, 255))
         gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
-                                 display_height / 10 - title_text.get_height() / 2))
+                                      display_height / 10 - title_text.get_height() / 2))
         gameDisplay.blit(return_text, (display_width / 2 - return_text.get_width() / 2,
-                                 display_height / 2.6 - return_text.get_height() / 2))
+                                       display_height / 2.6 - return_text.get_height() / 2))
         gameDisplay.blit(credit_text_1, (display_width / 2 - credit_text_1.get_width() / 2,
-                                 display_height / 1.2 - credit_text_1.get_height() / 2))
+                                         display_height / 1.2 - credit_text_1.get_height() / 2))
         gameDisplay.blit(credit_text_2, (display_width / 2 - credit_text_2.get_width() / 2,
-                                 display_height / 1.1 - credit_text_2.get_height() / 2))
+                                         display_height / 1.1 - credit_text_2.get_height() / 2))
         instruction_link = gameDisplay.blit(instruction_link,
-                         (display_width / 2 - instruction_link.get_width() / 2,
-                          display_height / 2 - instruction_link.get_height() / 2))
+                                            (display_width / 2 - instruction_link.get_width() / 2,
+                                             display_height / 2 - instruction_link.get_height() / 2))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -86,7 +87,6 @@ def instruction():
                     webbrowser.open(r"https://bicyclecards.com/how-to-play/blackjack/")
                     pygame.display.update()
     return run
-
 
 
 def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
@@ -111,7 +111,7 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
         pushes_text = statistics_font.render("Pushes: " + str(pushes), True, (255, 255, 255))
 
         gameDisplay.blit(title_text, (display_width / 2 - title_text.get_width() / 2,
-                                 display_height / 7 - title_text.get_height() / 2))
+                                      display_height / 7 - title_text.get_height() / 2))
         gameDisplay.blit(deal_text,
                          (display_width / 4.22 - deal_text.get_width() / 2,
                           display_height / 2.5 - deal_text.get_height() / 2))
@@ -142,6 +142,7 @@ def end_of_round_menu(win_status, bank, wins, losses, rounds, pushes):
             # quit game
             if event.type == pygame.QUIT:
                 pygame.quit()
+                return False
             elif event.type == pygame.KEYDOWN:
                 # if escape key is pressed quit game
                 if event.key == pygame.K_ESCAPE:

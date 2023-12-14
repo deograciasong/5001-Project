@@ -5,7 +5,7 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 
 
-class Button():
+class Button:
 
     def __init__(self, msg, x, y, width, height):
         self.txt = msg
