@@ -286,6 +286,7 @@ def main():
             rounds += 1
             display_instant_result("Double Blackjack", 900, 350)
             win_status = "push"
+            push_effect.play()
             end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
             continue
 
@@ -351,6 +352,7 @@ def main():
             pushes += 1
             rounds += 1
             win_status = "push"
+            push_effect.play()
 
         run = end_of_round_menu(win_status.upper(), bank, wins, losses, rounds, pushes)
     pygame.quit()
