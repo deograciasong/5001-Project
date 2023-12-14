@@ -15,8 +15,8 @@ class DeckTest(unittest.TestCase):
 
     def test_draw_card(self):
         # Test drawing a card from the deck
-        self.assertEqual(self.deck.draw_card(), 'J')
-        self.assertEqual(self.deck.draw_card(), '2')
+        self.assertEqual(self.deck.draw_card(), "J")
+        self.assertEqual(self.deck.draw_card(), "2")
         card = self.deck.draw_card()
         self.assertIn(card, self.deck.remaining_cards)
 
