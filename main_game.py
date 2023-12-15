@@ -1,3 +1,8 @@
+"""
+    CS5001 Fall 2023 SV
+    Final Project
+    Byunghyun Ko, Deo Gracias Ong, Xinrui Yi.
+"""
 import copy
 import random
 import time
